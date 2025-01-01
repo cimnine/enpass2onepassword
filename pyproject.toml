@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "enpass2onepassword"
+version = "0.1.0"
+description = "Tool to migrate from Enpass to 1Password"
+authors = ["Christian Mäder <mail@cimnine.ch>"]
+readme = "README.md"
+packages = [{include = "enpass2onepassword"}]
+license = "GPL-3.0-or-later"
+repository = "https://github.com/cimnine/enpass2onepassword"
+keywords = ["1password", "enpass"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: Desktop Environment",
+    "Topic :: Office/Business",
+    "Topic :: Utilities"
+]
+
+[tool.poetry.dependencies]
+python = "^3.13"
+click = "^8.1.8"
+onepassword-sdk = "^0.1.5"
+aiostream = "^0.6.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+enpass2onepassword = "enpass2onepassword.__main__:main"

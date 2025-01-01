@@ -7,7 +7,7 @@ from onepassword import ItemCreateParams, ItemCategory, ItemFieldType, ItemSecti
 from onepassword.client import Client
 
 
-async def migrate(ep_file, op_sa_name, op_sa_token, op_vault, ignore_non_empty, no_confirm, silent):
+async def migrate(ep_file, op_sa_name, op_sa_token, op_vault, ignore_non_empty, no_confirm, silent, skip):
     try:
         client = await Client.authenticate(auth=op_sa_token, integration_name=op_sa_name, integration_version="v1.0.0")
     except Exception as e:
@@ -53,11 +53,20 @@ async def migrate(ep_file, op_sa_name, op_sa_token, op_vault, ignore_non_empty, 
             message=f"Unable to load the given Enpass export.",
             err=True)
         raise click.Abort()
-    ep_items = enpass['items']
 
     folders_mapping = {}
     for folder in enpass['folders']:
         folders_mapping[folder['uuid']] = folder['title']
+
+    ep_items = enpass['items']
+    ep_len = len(ep_items)
+    if skip >= ep_len - 1:
+        if not silent:
+            click.secho(f"Skipping all {ep_len} Enpass entries.", fg='yellow')
+        return
+    elif skip > 0:
+        click.echo(f"Skipping {click.style(skip, fg='green')} entries of {ep_len} in total.")
+        ep_items = ep_items[skip:]
 
     op_items = []
     for ep_item in ep_items:
@@ -110,8 +119,9 @@ async def migrate(ep_file, op_sa_name, op_sa_token, op_vault, ignore_non_empty, 
     op_total = len(op_items)
 
     if not silent:
-        click.echo(f"{click.style(ep_total, fg='green')} Enpass entries have been analyzed.")
-        click.echo(f"{click.style(op_total, fg='green')} 1Password entries will be created.")
+        entries = " remaining" if skip > 0 else ""
+        click.echo(f"{click.style(ep_total, fg='green')}{entries} Enpass entries have been analyzed.")
+        click.echo(f"{click.style(op_total, fg='green')}{entries} 1Password entries will be created.")
 
     if not no_confirm:
         click.echo("Type 'y' to continue: ", nl=False)
@@ -122,12 +132,20 @@ async def migrate(ep_file, op_sa_name, op_sa_token, op_vault, ignore_non_empty, 
 
     for i, op_item in enumerate(op_items):
         if not silent and i % 10 == 0:
-            click.echo(f"Creating entry {i} of {op_total} …")
+            if i > 0:
+                click.echo()
+            click.echo(f"Creating entry {skip + i} ({i} of {op_total}) ", nl=False)
+            breakpoint()
 
-        await client.items.create(op_item)
+        try:
+            await client.items.create(op_item)
+            click.echo(".", nl=False)
+        except Exception as e:
+            click.echo(f"Error creating entry {skip + i}: {e}")
 
     if not silent:
-        click.echo(f"{click.style('Done.', fg='green')} Migrated {op_total} entries.")
+        skipped = f" Skipped {skip} entries." if skip > 0 else ""
+        click.echo(f"{click.style('Done.', fg='green')} Migrated {op_total} entries.{skipped}")
 
 
 def map_sections(item):
@@ -146,6 +164,9 @@ def map_fields(item):
         return []
 
     current_section_uid = ''
+    first_username = True
+    first_password = True
+    first_totp = True
 
     result = []
     for field in sorted(fields, key=lambda f: f['order']):
@@ -156,15 +177,32 @@ def map_fields(item):
             continue
         if field['type'] == '.Android#':
             continue
+        if field['type'] == 'totp' and field['value'] == '':
+            continue
 
         sensitive = field['sensitive'] != 0
+        section_id = current_section_uid
+        field_id = str(field['uid'])
+
+        if first_username and field['type'] == 'username':
+            section_id = None
+            field_id = 'username'
+            first_username = False
+        elif first_password and field['type'] == 'password':
+            section_id = None
+            field_id = 'password'
+            first_password = False
+        elif first_totp and field['type'] == 'totp':
+            section_id = None
+            field_id = 'onetimepassword'
+            first_totp = False
 
         result.append(ItemField(
-            id=str(field['uid']),
-            title=field['label'],
+            id=field_id,
+            title=field['label'].lower(),
             field_type=ItemFieldType.CONCEALED if sensitive else map_field_type(item, field),
             value=field['value'],
-            section_id=current_section_uid
+            section_id=section_id
         ))
 
     return result

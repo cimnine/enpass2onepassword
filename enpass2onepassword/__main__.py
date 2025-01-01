@@ -1,9 +1,17 @@
 #!/usr/bin/env python3
 import asyncio
+from email.policy import default
 
 import click
 
 from enpass2onepassword.migration import migrate
+
+
+def is_positive(ctx, param, value):
+    if value > 0:
+        return value
+
+    raise click.BadParameter("value must be positive")
 
 
 @click.command()
@@ -45,11 +53,18 @@ from enpass2onepassword.migration import migrate
               Use this flag to disable such reports.
               '''
               )
+@click.option('--skip',
+              type=click.INT, callback=is_positive, default=0, show_default=True,
+              help='''
+              Skip the first number of items.
+              This can be helpful to recover a failed import.
+              '''
+              )
 @click.argument("enpass_json_export",
                 default='export.json', type=click.File("rb"), envvar='ENPASS_FILE', required=True)
-def main(enpass_json_export, sa_name, sa_token, op_vault, ignore_non_empty, no_confirm, silent):
+def main(enpass_json_export, sa_name, sa_token, op_vault, ignore_non_empty, no_confirm, silent, skip):
     """Adds items from an Enpass JSON export to a 1Password vault through the 1Password API."""
-    asyncio.run(migrate(enpass_json_export, sa_name, sa_token, op_vault, ignore_non_empty, no_confirm, silent))
+    asyncio.run(migrate(enpass_json_export, sa_name, sa_token, op_vault, ignore_non_empty, no_confirm, silent, skip))
 
 
 if __name__ == '__main__':

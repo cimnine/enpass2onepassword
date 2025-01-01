@@ -78,6 +78,9 @@ Options:
   --silent                        By default, this tool will print status
                                   information while importing to 1Password.
                                   Use this flag to disable such reports.
+  --skip INTEGER                  Skip the first number of items. This can be
+                                  helpful to recover a failed import.
+                                  [default: 0]
   --help                          Show this message and exit.
 ```
 

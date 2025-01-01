@@ -61,6 +61,11 @@ async def migrate(ep_file, op_sa_name, op_sa_token, op_vault, ignore_non_empty, 
 
     op_items = []
     for ep_item in ep_items:
+        if ep_item.get('trashed', 0) != 0:
+            continue
+        if ep_item.get('archived', 0) != 0:
+            continue
+
         category = map_category(ep_item)
         autofill_behavior = AutofillBehavior.NEVER \
             if ep_item['auto_submit'] == 0 \

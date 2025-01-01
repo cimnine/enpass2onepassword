@@ -87,11 +87,13 @@ Options:
 - [ ] Support for importing attachments, once [#139][gh-op-139] is implemented
 - [ ] Improved support for Secure Notes, once [#141][gh-op-141] is implemented
 - [ ] Improved support for Wireless Networks, once [#142][gh-op-142] is implemented
+- [ ] Support for favorites, once [#143][gh-op-143] is implemented
 
 [gh-op-139]: https://github.com/1Password/onepassword-sdk-python/issues/139
 [gh-op-140]: https://github.com/1Password/onepassword-sdk-python/issues/140
 [gh-op-141]: https://github.com/1Password/onepassword-sdk-python/issues/141
 [gh-op-142]: https://github.com/1Password/onepassword-sdk-python/issues/142
+[gh-op-143]: https://github.com/1Password/onepassword-sdk-python/issues/143
 
 ## Tip: Load Service Account Credentials via 1Password CLI
 

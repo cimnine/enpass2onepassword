@@ -86,10 +86,12 @@ Options:
 - [ ] Improved support for credit card's expiry date, once [#140][gh-op-140] is implemented
 - [ ] Support for importing attachments, once [#139][gh-op-139] is implemented
 - [ ] Improved support for Secure Notes, once [#141][gh-op-141] is implemented
+- [ ] Improved support for Wireless Networks, once [#142][gh-op-142] is implemented
 
 [gh-op-139]: https://github.com/1Password/onepassword-sdk-python/issues/139
 [gh-op-140]: https://github.com/1Password/onepassword-sdk-python/issues/140
 [gh-op-141]: https://github.com/1Password/onepassword-sdk-python/issues/141
+[gh-op-142]: https://github.com/1Password/onepassword-sdk-python/issues/142
 
 ## Tip: Load Service Account Credentials via 1Password CLI
 

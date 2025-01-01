@@ -6,8 +6,15 @@ from aiostream import stream
 from onepassword import ItemCreateParams, ItemCategory, ItemFieldType, ItemSection, Website, AutofillBehavior, ItemField
 from onepassword.client import Client
 
+
 async def migrate(ep_file, op_sa_name, op_sa_token, op_vault, ignore_non_empty, no_confirm, silent):
-    client = await Client.authenticate(auth=op_sa_token, integration_name=op_sa_name, integration_version="v1.0.0")
+    try:
+        client = await Client.authenticate(auth=op_sa_token, integration_name=op_sa_name, integration_version="v1.0.0")
+    except Exception as e:
+        click.echo(f"An error occured while setting up the connection to 1Password: {click.style(e, fg='red')}",
+                   err=True)
+        click.echo("Check the 1Password Service Account name and token, and try again.")
+        raise click.Abort()
 
     vaults = await client.vaults.list_all()
 
@@ -28,6 +35,9 @@ async def migrate(ep_file, op_sa_name, op_sa_token, op_vault, ignore_non_empty, 
             err=True)
         raise click.Abort()
     op_vault_id = vault.id
+
+    # item = await client.items.get(vault_id=op_vault_id, item_id='uuid')
+    # breakpoint()
 
     op_items_async_iter = await client.items.list_all(vault.id)
     op_items = await stream.list(op_items_async_iter)
@@ -57,7 +67,8 @@ async def migrate(ep_file, op_sa_name, op_sa_token, op_vault, ignore_non_empty, 
             else AutofillBehavior.ANYWHEREONWEBSITE
 
         if category == ItemCategory.PASSWORD:
-            websites = ([Website(url=field['value'], label=field['label'], autofill_behavior=autofill_behavior) for field in
+            websites = ([Website(url=field['value'], label=field['label'], autofill_behavior=autofill_behavior) for
+                         field in
                          ep_item['fields'] if field['type'] == 'url' or field['type']]
                         +
                         [Website(url=field['value'], label=field['label'],
@@ -66,10 +77,18 @@ async def migrate(ep_file, op_sa_name, op_sa_token, op_vault, ignore_non_empty, 
         else:
             websites = None
 
-        sections = ([ItemSection(id='', title='')] +
-                    [ItemSection(id=str(field['uid']), title=field['label']) for field in ep_item['fields'] if
-                     field['type'] == 'section'])
+        sections = map_sections(ep_item)
         fields = map_fields(ep_item)
+
+        note = ep_item.get('note', None)
+        if note:
+            fields.append(ItemField(
+                id='note',
+                title='Note',
+                field_type=ItemFieldType.TEXT,
+                value=note,
+                section_id=''
+            ))
 
         op_item = ItemCreateParams(
             title=ep_item['title'],
@@ -85,8 +104,9 @@ async def migrate(ep_file, op_sa_name, op_sa_token, op_vault, ignore_non_empty, 
     ep_total = len(ep_items)
     op_total = len(op_items)
 
-    click.echo(f"{click.style(ep_total, fg='green')} Enpass entries have been analyzed.")
-    click.echo(f"{click.style(op_total, fg='green')} 1Password entries will be created.")
+    if not silent:
+        click.echo(f"{click.style(ep_total, fg='green')} Enpass entries have been analyzed.")
+        click.echo(f"{click.style(op_total, fg='green')} 1Password entries will be created.")
 
     if not no_confirm:
         click.echo("Type 'y' to continue: ", nl=False)
@@ -96,17 +116,30 @@ async def migrate(ep_file, op_sa_name, op_sa_token, op_vault, ignore_non_empty, 
             raise click.Abort()
 
     for i, op_item in enumerate(op_items):
-        if not silent:
-            if i % 10 == 0:
-                click.echo(f"Creating {i} of {op_total}")
-            elif (i / op_total) % 0.1 == 0:
-                click.echo(f"{i / op_total * 100}% complete")
+        if not silent and i % 10 == 0:
+            click.echo(f"Creating entry {i} of {op_total} …")
 
         await client.items.create(op_item)
 
+    if not silent:
+        click.echo(f"{click.style('Done.', fg='green')} Migrated {op_total} entries.")
+
+
+def map_sections(item):
+    default_sections = [ItemSection(id='', title='')]
+    fields = item.get('fields', None)
+    if not fields:
+        return default_sections
+
+    return default_sections + [ItemSection(id=str(field['uid']), title=field['label']) for field in fields
+                               if field['type'] == 'section']
+
 
 def map_fields(item):
-    fields = item['fields']
+    fields = item.get('fields', None)
+    if not fields:
+        return []
+
     current_section_uid = ''
 
     result = []

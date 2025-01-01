@@ -80,17 +80,17 @@ async def migrate(ep_file,
 
         category = map_category(ep_item)
         autofill_behavior = AutofillBehavior.NEVER \
-            if ep_item['auto_submit'] == 0 \
+            if ep_item['auto_submit'] != 0 \
             else AutofillBehavior.ANYWHEREONWEBSITE
 
-        if category == ItemCategory.PASSWORD:
+        if category == ItemCategory.PASSWORD or category == ItemCategory.LOGIN:
             websites = ([Website(url=field['value'], label=field['label'], autofill_behavior=autofill_behavior) for
                          field in
                          ep_item['fields'] if field['type'] == 'url' or field['type']]
                         +
                         [Website(url=field['value'], label=field['label'],
                                  autofill_behavior=AutofillBehavior.ANYWHEREONWEBSITE) for field in
-                         ep_item['fields'] if field['type'] == 'url' or field['type'] == '.Android#'])
+                         ep_item['fields'] if field['type'] == '.Android#'])
         else:
             websites = None
 

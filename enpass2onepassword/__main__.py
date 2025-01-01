@@ -60,11 +60,38 @@ def is_positive(ctx, param, value):
               This can be helpful to recover a failed import.
               '''
               )
+@click.option('--op-rate-limit-hourly', 'rate_limit_h',
+              type=click.INT, callback=is_positive, default=100, show_default=True,
+              help='''
+              1Password enforces a write request rate limit per 1Password Service Account.
+              The hourly rate limit as of 2025-01-01 is 100 requests per hour for private, family and team accounts
+              and 1'000 requests per hour for Business accounts.
+              
+              \b
+              See https://developer.1password.com/docs/service-accounts/rate-limits/ for more info.
+              '''
+              )
+@click.option('--op-rate-limit-daily', 'rate_limit_d',
+              type=click.INT, callback=is_positive, default=1000, show_default=True,
+              help='''
+              1Password enforces a write request rate limit per 1Password Account.
+              The daily limit as of 2025-01-01 is 1'000 requests per hour for private and family accounts,
+              5'000 per day for Teams accounts and 50'000 requests per hour for Business accounts.
+              
+              \b
+              See https://developer.1password.com/docs/service-accounts/rate-limits/ for more info.
+              '''
+              )
 @click.argument("enpass_json_export",
                 default='export.json', type=click.File("rb"), envvar='ENPASS_FILE', required=True)
-def main(enpass_json_export, sa_name, sa_token, op_vault, ignore_non_empty, no_confirm, silent, skip):
+def main(enpass_json_export,
+         sa_name, sa_token, op_vault,
+         ignore_non_empty, no_confirm, silent, skip, rate_limit_h, rate_limit_d):
     """Adds items from an Enpass JSON export to a 1Password vault through the 1Password API."""
-    asyncio.run(migrate(enpass_json_export, sa_name, sa_token, op_vault, ignore_non_empty, no_confirm, silent, skip))
+    asyncio.run(
+        migrate(enpass_json_export,
+                sa_name, sa_token, op_vault,
+                ignore_non_empty, no_confirm, silent, skip, rate_limit_h, rate_limit_d))
 
 
 if __name__ == '__main__':

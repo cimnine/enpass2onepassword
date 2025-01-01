@@ -5,9 +5,12 @@ import click
 from aiostream import stream
 from onepassword import ItemCreateParams, ItemCategory, ItemFieldType, ItemSection, Website, AutofillBehavior, ItemField
 from onepassword.client import Client
+from pyrate_limiter import Duration, Rate, Limiter, InMemoryBucket
 
 
-async def migrate(ep_file, op_sa_name, op_sa_token, op_vault, ignore_non_empty, no_confirm, silent, skip):
+async def migrate(ep_file,
+                  op_sa_name, op_sa_token, op_vault,
+                  ignore_non_empty, no_confirm, silent, skip, op_rate_limit_h, op_rate_limit_d):
     try:
         client = await Client.authenticate(auth=op_sa_token, integration_name=op_sa_name, integration_version="v1.0.0")
     except Exception as e:
@@ -115,6 +118,11 @@ async def migrate(ep_file, op_sa_name, op_sa_token, op_vault, ignore_non_empty, 
         )
         op_items.append(op_item)
 
+    hourly_rate = Rate(op_rate_limit_h, Duration.HOUR)
+    daily_rate = Rate(op_rate_limit_d, Duration.DAY)
+    bucket = InMemoryBucket([hourly_rate, daily_rate])
+    limiter = Limiter(bucket, max_delay=3_900_000) # 1h 5min
+
     ep_total = len(ep_items)
     op_total = len(op_items)
 
@@ -135,13 +143,16 @@ async def migrate(ep_file, op_sa_name, op_sa_token, op_vault, ignore_non_empty, 
             if i > 0:
                 click.echo()
             click.echo(f"Creating entry {skip + i} ({i} of {op_total}) ", nl=False)
-            breakpoint()
 
         try:
+            # noinspection PyAsyncCall
+            limiter.try_acquire('onepassword-write')
+
             await client.items.create(op_item)
             click.echo(".", nl=False)
         except Exception as e:
-            click.echo(f"Error creating entry {skip + i}: {e}")
+            click.echo(f"Error creating entry {skip + i}: {e}", err=True)
+            raise click.Abort()
 
     if not silent:
         skipped = f" Skipped {skip} entries." if skip > 0 else ""

@@ -42,7 +42,6 @@ and imports it via the 1Password SDK.
 ## Usage Overview
 
 ```text
-$> enpass2onepassword --help
 Usage: enpass2onepassword [OPTIONS] ENPASS_JSON_EXPORT
 
   Adds items from an Enpass JSON export to a 1Password vault through the
@@ -81,6 +80,22 @@ Options:
   --skip INTEGER                  Skip the first number of items. This can be
                                   helpful to recover a failed import.
                                   [default: 0]
+  --op-rate-limit-hourly INTEGER  1Password enforces a write request rate
+                                  limit per 1Password Service Account. The
+                                  hourly rate limit as of 2025-01-01 is 100
+                                  requests per hour for private, family and
+                                  team accounts and 1'000 requests per hour
+                                  for Business accounts.
+
+                                  See https://developer.1password.com/docs/service-accounts/rate-limits/ for more info.  [default: 100]
+  --op-rate-limit-daily INTEGER   1Password enforces a write request rate
+                                  limit per 1Password Account. The daily limit
+                                  as of 2025-01-01 is 1'000 requests per hour
+                                  for private and family accounts, 5'000 per
+                                  day for Teams accounts and 50'000 requests
+                                  per hour for Business accounts.
+
+                                  See https://developer.1password.com/docs/service-accounts/rate-limits/ for more info.  [default: 1000]
   --help                          Show this message and exit.
 ```
 

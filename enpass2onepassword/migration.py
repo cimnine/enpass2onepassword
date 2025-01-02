@@ -86,7 +86,7 @@ async def migrate(ep_file,
         if category == ItemCategory.PASSWORD or category == ItemCategory.LOGIN:
             websites = ([Website(url=field['value'], label=field['label'], autofill_behavior=autofill_behavior) for
                          field in
-                         ep_item['fields'] if field['type'] == 'url' or field['type']]
+                         ep_item['fields'] if field['type'] == 'url']
                         +
                         [Website(url=field['value'], label=field['label'],
                                  autofill_behavior=AutofillBehavior.ANYWHEREONWEBSITE) for field in
@@ -121,7 +121,7 @@ async def migrate(ep_file,
     hourly_rate = Rate(op_rate_limit_h, Duration.HOUR)
     daily_rate = Rate(op_rate_limit_d, Duration.DAY)
     bucket = InMemoryBucket([hourly_rate, daily_rate])
-    limiter = Limiter(bucket, max_delay=3_900_000) # 1h 5min
+    limiter = Limiter(bucket, max_delay=3_900_000)  # 1h 5min
 
     ep_total = len(ep_items)
     op_total = len(op_items)
@@ -175,9 +175,9 @@ def map_fields(item):
         return []
 
     current_section_uid = ''
-    first_username = True
-    first_password = True
-    first_totp = True
+    first_email = None
+    has_username = False
+    has_password = False
 
     result = []
     for field in sorted(fields, key=lambda f: f['order']):
@@ -195,18 +195,17 @@ def map_fields(item):
         section_id = current_section_uid
         field_id = str(field['uid'])
 
-        if first_username and field['type'] == 'username':
+        if not has_username and field['type'] == 'username':
             section_id = None
             field_id = 'username'
-            first_username = False
-        elif first_password and field['type'] == 'password':
+            has_username = True
+        elif not has_password and field['type'] == 'password':
             section_id = None
             field_id = 'password'
-            first_password = False
-        elif first_totp and field['type'] == 'totp':
-            section_id = None
-            field_id = 'onetimepassword'
-            first_totp = False
+            has_password = True
+        elif first_email is None and field['type'] == 'email':
+            field_id = 'email'
+            first_email = field['value']
 
         result.append(ItemField(
             id=field_id,
@@ -214,6 +213,15 @@ def map_fields(item):
             field_type=ItemFieldType.CONCEALED if sensitive else map_field_type(item, field),
             value=field['value'],
             section_id=section_id
+        ))
+
+    if not has_username and first_email is not None:
+        result.append(ItemField(
+            id='username',
+            title='Username',
+            field_type=ItemFieldType.TEXT,
+            value=first_email,
+            section_id=None
         ))
 
     return result

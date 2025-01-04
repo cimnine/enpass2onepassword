@@ -183,17 +183,14 @@ def map_fields(item):
     for field in sorted(fields, key=lambda f: f['order']):
         if field['deleted'] != 0:
             continue
-        if field['type'] == 'section':
+        elif field['value'] == '':
+            continue
+        elif field['type'] == 'section':
             current_section_uid = str(field['uid'])
             continue
-        if field['type'] == '.Android#':
-            continue
-        if field['type'] == 'totp' and field['value'] == '':
+        elif field['type'] == '.Android#':
             continue
 
-        sensitive = field['sensitive'] != 0
-        section_id = current_section_uid
-        field_id = str(field['uid'])
 
         if not has_username and field['type'] == 'username':
             section_id = None
@@ -206,6 +203,12 @@ def map_fields(item):
         elif first_email is None and field['type'] == 'email':
             field_id = 'email'
             first_email = field['value']
+        else:
+            field_id = str(field['uid'])
+            section_id = current_section_uid
+
+
+        sensitive = field['sensitive'] != 0
 
         result.append(ItemField(
             id=field_id,

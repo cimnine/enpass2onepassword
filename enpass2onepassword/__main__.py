@@ -21,10 +21,16 @@ def is_positive(ctx, param, value):
               help='''
               The 1Password service account name.
               You chose this when creating the 1Password service account.
+              
+              Can also be supplied as environment variable 'OP_SERVICE_ACCOUNT_NAME'.
               ''')
 @click.option("--op-sa-token", "-t", "--token", "sa_token",
               prompt=True, hide_input=True, type=click.STRING, envvar='OP_SERVICE_ACCOUNT_TOKEN', required=True,
-              help='The 1Password service account token. This was created when creating the 1Password service account.')
+              help='''
+              The 1Password service account token. It was shown to you when you created the 1Password service account.
+              
+              Can also be supplied as environment variable 'OP_SERVICE_ACCOUNT_TOKEN'.
+              ''')
 @click.option("--op-vault", "-o", "--vault", "op_vault",
               prompt=True, type=click.STRING, envvar='OP_VAULT', required=True,
               default='Enpass', show_default=True,
@@ -33,6 +39,8 @@ def is_positive(ctx, param, value):
               All Enpass items will be created in that 1Password vault.
               This 1Password vault must be empty! 
               Also, the service account must have write permissions to it.
+              
+              Can also be supplied as environment variable 'OP_VAULT'.
               ''')
 @click.option('--ignore-non-empty-vault', 'ignore_non_empty', is_flag=True,
               help='''

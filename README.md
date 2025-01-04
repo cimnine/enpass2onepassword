@@ -50,18 +50,26 @@ Usage: enpass2onepassword [OPTIONS] ENPASS_JSON_EXPORT
 Options:
   -n, --op-sa-name, --sa TEXT     The 1Password service account name. You
                                   chose this when creating the 1Password
-                                  service account.  [default:
+                                  service account.
+
+                                  Can also be supplied as environment variable
+                                  'OP_SERVICE_ACCOUNT_NAME'.  [default:
                                   enpass2onepassword; required]
   -t, --op-sa-token, --token TEXT
-                                  The 1Password service account token. This
-                                  was created when creating the 1Password
-                                  service account.  [required]
+                                  The 1Password service account token. It was
+                                  shown to you when you created the 1Password
+                                  service account.
+
+                                  Can also be supplied as environment variable
+                                  'OP_SERVICE_ACCOUNT_TOKEN'.  [required]
   -o, --op-vault, --vault TEXT    The name of the 1Password vault. All Enpass
                                   items will be created in that 1Password
                                   vault. This 1Password vault must be empty!
                                   Also, the service account must have write
-                                  permissions to it.  [default: Enpass;
-                                  required]
+                                  permissions to it.
+
+                                  Can also be supplied as environment variable
+                                  'OP_VAULT'.  [default: Enpass; required]
   --ignore-non-empty-vault        By default, this tool will stop if it
                                   detects that there are already items in a
                                   vault. Use this flag to ignore this behavior

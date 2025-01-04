@@ -54,6 +54,21 @@ files = [
 ]
 
 [[package]]
+name = "jeepney"
+version = "0.8.0"
+description = "Low-level, pure Python DBus protocol wrapper."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "jeepney-0.8.0-py3-none-any.whl", hash = "sha256:c0a454ad016ca575060802ee4d590dd912e35c122fa04e70306de3d076cce755"},
+    {file = "jeepney-0.8.0.tar.gz", hash = "sha256:5efe48d255973902f6badc3ce55e2aa6c5c3b3bc642059ef3a91247bcfcc5806"},
+]
+
+[package.extras]
+test = ["async-timeout", "pytest", "pytest-asyncio (>=0.17)", "pytest-trio", "testpath", "trio"]
+trio = ["async_generator", "trio"]
+
+[[package]]
 name = "onepassword-sdk"
 version = "0.1.5"
 description = "The 1Password Python SDK offers programmatic read access to your secrets in 1Password in an interface native to Python."
@@ -249,7 +264,21 @@ files = [
     {file = "typing_extensions-4.12.2.tar.gz", hash = "sha256:1a7ead55c7e559dd4dee8856e3a88b41225abfe1ce8df57b7c13915fe121ffb8"},
 ]
 
+[[package]]
+name = "wakepy"
+version = "0.10.1"
+description = "wakelock / keep-awake / stay-awake"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "wakepy-0.10.1-py3-none-any.whl", hash = "sha256:a3c43e6b580759732bf96606ae015bfb98e528d5872a25a9bc8457bc70055fac"},
+    {file = "wakepy-0.10.1.tar.gz", hash = "sha256:8c124e6bec03fd5afe8aff7a6c529d8ce90de976a82f0abc432fe30e5862838e"},
+]
+
+[package.dependencies]
+jeepney = {version = ">=0.7.1", markers = "platform_system == \"Linux\" or platform_system == \"FreeBSD\" or platform_system == \"OpenBSD\" or platform_system == \"NetBSD\" or platform_system == \"DragonFly\" or platform_system == \"SunOS\" or platform_system == \"AIX\" or platform_system == \"Minix\""}
+
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.13"
-content-hash = "ca91fce88daf93a48e2ed051b9e29a7df95b7a294463d354cb66c087f5c88cf0"
+content-hash = "e9f66be080648f0044a9a63f1616964694cd395bd91882fd4790351a22ab5054"

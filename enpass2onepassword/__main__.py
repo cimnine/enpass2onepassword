@@ -1,17 +1,25 @@
 #!/usr/bin/env python3
 import asyncio
-from email.policy import default
 
 import click
 
 from enpass2onepassword.migration import migrate
 
 
+# noinspection PyUnusedLocal
 def is_positive(ctx, param, value):
-    if value > 0:
+    if value > 0 and isinstance(value, int):
         return value
 
-    raise click.BadParameter("value must be positive")
+    raise click.BadParameter("It must be a positive integer greater than zero")
+
+
+# noinspection PyUnusedLocal
+def is_zero_or_positive(ctx, param, value):
+    if value >= 0 and isinstance(value, int):
+        return value
+
+    raise click.BadParameter("It must be zero or a positive integer")
 
 
 @click.command()
@@ -55,6 +63,16 @@ def is_positive(ctx, param, value):
               Use this flag to ignore this behavior and import without further confirmation.
               '''
               )
+@click.option('--no-wakelock', 'no_wakelock', is_flag=True,
+              help='''
+              By default, this tool will prevent the computer to go to sleep while the import is running.
+              Use this flag to disable this behavior.
+              
+              When this flag is defined, then the computer might go to sleep and interrupt your import.
+              The import is usually resumed, when your computer resumes from sleep.
+              The result is that you won't make the best use of the 1Password rate limits.
+              '''
+              )
 @click.option('--silent', is_flag=True,
               help='''
               By default, this tool will print status information while importing to 1Password.
@@ -62,7 +80,7 @@ def is_positive(ctx, param, value):
               '''
               )
 @click.option('--skip',
-              type=click.INT, callback=is_positive, default=0, show_default=True,
+              type=click.INT, callback=is_zero_or_positive, default=0, show_default=True,
               help='''
               Skip the first number of items.
               This can be helpful to recover a failed import.
@@ -94,12 +112,12 @@ def is_positive(ctx, param, value):
                 default='export.json', type=click.File("rb"), envvar='ENPASS_FILE', required=True)
 def main(enpass_json_export,
          sa_name, sa_token, op_vault,
-         ignore_non_empty, no_confirm, silent, skip, rate_limit_h, rate_limit_d):
+         ignore_non_empty, no_confirm, silent, skip, no_wakelock, rate_limit_h, rate_limit_d):
     """Adds items from an Enpass JSON export to a 1Password vault through the 1Password API."""
     asyncio.run(
         migrate(enpass_json_export,
                 sa_name, sa_token, op_vault,
-                ignore_non_empty, no_confirm, silent, skip, rate_limit_h, rate_limit_d))
+                ignore_non_empty, no_confirm, silent, skip, no_wakelock, rate_limit_h, rate_limit_d))
 
 
 if __name__ == '__main__':

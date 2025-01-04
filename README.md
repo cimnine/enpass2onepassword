@@ -51,7 +51,7 @@ Options:
   -n, --op-sa-name, --sa TEXT     The 1Password service account name. You
                                   chose this when creating the 1Password
                                   service account.
-
+                                  
                                   Can also be supplied as environment variable
                                   'OP_SERVICE_ACCOUNT_NAME'.  [default:
                                   enpass2onepassword; required]
@@ -59,7 +59,7 @@ Options:
                                   The 1Password service account token. It was
                                   shown to you when you created the 1Password
                                   service account.
-
+                                  
                                   Can also be supplied as environment variable
                                   'OP_SERVICE_ACCOUNT_TOKEN'.  [required]
   -o, --op-vault, --vault TEXT    The name of the 1Password vault. All Enpass
@@ -67,7 +67,7 @@ Options:
                                   vault. This 1Password vault must be empty!
                                   Also, the service account must have write
                                   permissions to it.
-
+                                  
                                   Can also be supplied as environment variable
                                   'OP_VAULT'.  [default: Enpass; required]
   --ignore-non-empty-vault        By default, this tool will stop if it
@@ -82,6 +82,17 @@ Options:
                                   need to confirm the import. Use this flag to
                                   ignore this behavior and import without
                                   further confirmation.
+  --no-wakelock                   By default, this tool will prevent the
+                                  computer to go to sleep while the import is
+                                  running. Use this flag to disable this
+                                  behavior.
+                                  
+                                  When this flag is defined, then the computer
+                                  might go to sleep and interrupt your import.
+                                  The import is usually resumed, when your
+                                  computer resumes from sleep. The result is
+                                  that you won't make the best use of the
+                                  1Password rate limits.
   --silent                        By default, this tool will print status
                                   information while importing to 1Password.
                                   Use this flag to disable such reports.
@@ -94,7 +105,7 @@ Options:
                                   requests per hour for private, family and
                                   team accounts and 1'000 requests per hour
                                   for Business accounts.
-
+                                  
                                   See https://developer.1password.com/docs/service-accounts/rate-limits/ for more info.  [default: 100]
   --op-rate-limit-daily INTEGER   1Password enforces a write request rate
                                   limit per 1Password Account. The daily limit
@@ -102,7 +113,7 @@ Options:
                                   for private and family accounts, 5'000 per
                                   day for Teams accounts and 50'000 requests
                                   per hour for Business accounts.
-
+                                  
                                   See https://developer.1password.com/docs/service-accounts/rate-limits/ for more info.  [default: 1000]
   --help                          Show this message and exit.
 ```

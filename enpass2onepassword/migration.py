@@ -6,11 +6,13 @@ from aiostream import stream
 from onepassword import ItemCreateParams, ItemCategory, ItemFieldType, ItemSection, Website, AutofillBehavior, ItemField
 from onepassword.client import Client
 from pyrate_limiter import Duration, Rate, Limiter, InMemoryBucket
+from wakepy.modes import keep
 
 
 async def migrate(ep_file,
                   op_sa_name, op_sa_token, op_vault,
-                  ignore_non_empty, no_confirm, silent, skip, op_rate_limit_h, op_rate_limit_d):
+                  ignore_non_empty, no_confirm, silent, skip, no_wakelock,
+                  op_rate_limit_h, op_rate_limit_d):
     try:
         client = await Client.authenticate(auth=op_sa_token, integration_name=op_sa_name, integration_version="v1.0.0")
     except Exception as e:
@@ -118,26 +120,30 @@ async def migrate(ep_file,
         )
         op_items.append(op_item)
 
+    if no_wakelock:
+        await upload_to_onepassword(client, no_confirm, op_rate_limit_d, op_rate_limit_h, silent, skip, ep_items, op_items)
+    else:
+        with keep.running():
+            await upload_to_onepassword(client, no_confirm, op_rate_limit_d, op_rate_limit_h, silent, skip, ep_items, op_items)
+
+
+async def upload_to_onepassword(client, no_confirm, op_rate_limit_d, op_rate_limit_h, silent, skip, ep_items, op_items):
     hourly_rate = Rate(op_rate_limit_h, Duration.HOUR)
     daily_rate = Rate(op_rate_limit_d, Duration.DAY)
     bucket = InMemoryBucket([hourly_rate, daily_rate])
     limiter = Limiter(bucket, max_delay=3_900_000)  # 1h 5min
-
     ep_total = len(ep_items)
     op_total = len(op_items)
-
     if not silent:
         entries = " remaining" if skip > 0 else ""
         click.echo(f"{click.style(ep_total, fg='green')}{entries} Enpass entries have been analyzed.")
         click.echo(f"{click.style(op_total, fg='green')}{entries} 1Password entries will be created.")
-
     if not no_confirm:
         click.echo("Type 'y' to continue: ", nl=False)
         c = click.getchar()
         click.echo()
         if c != 'y':
             raise click.Abort()
-
     for i, op_item in enumerate(op_items):
         if not silent and i % 10 == 0:
             if i > 0:
@@ -153,7 +159,6 @@ async def migrate(ep_file,
         except Exception as e:
             click.echo(f"Error creating entry {skip + i}: {e}", err=True)
             raise click.Abort()
-
     if not silent:
         skipped = f" Skipped {skip} entries." if skip > 0 else ""
         click.echo(f"{click.style('Done.', fg='green')} Migrated {op_total} entries.{skipped}")
@@ -191,6 +196,8 @@ def map_fields(item):
         elif field['type'] == '.Android#':
             continue
 
+        field_id = str(field['uid'])
+        section_id = current_section_uid
 
         if not has_username and field['type'] == 'username':
             section_id = None
@@ -203,10 +210,6 @@ def map_fields(item):
         elif first_email is None and field['type'] == 'email':
             field_id = 'email'
             first_email = field['value']
-        else:
-            field_id = str(field['uid'])
-            section_id = current_section_uid
-
 
         sensitive = field['sensitive'] != 0
 

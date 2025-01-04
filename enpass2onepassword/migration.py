@@ -79,9 +79,9 @@ async def migrate(ep_file,
             continue
 
         category = map_category(ep_item)
-        autofill_behavior = AutofillBehavior.NEVER \
+        autofill_behavior = AutofillBehavior.ANYWHEREONWEBSITE \
             if ep_item['auto_submit'] != 0 \
-            else AutofillBehavior.ANYWHEREONWEBSITE
+            else AutofillBehavior.NEVER
 
         if category == ItemCategory.PASSWORD or category == ItemCategory.LOGIN:
             websites = ([Website(url=field['value'], label=field['label'], autofill_behavior=autofill_behavior) for

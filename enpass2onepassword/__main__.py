@@ -109,8 +109,9 @@ def is_zero_or_positive(ctx, param, value):
               '''
               )
 @click.option('--op-client-validity', 'client_validity_s',
-              type=click.INT, callback=is_positive, default=30*60, show_default=True,
-              help='''
+              type=click.INT, callback=is_positive, default=30 * 60, show_default=True,
+              help=
+              '''
               This tool authenticates with the 1Password server in order to import entries.
               This authentication is only valid for a certain amount of time.
               With this parameter, you can adjust the time after which a this tool re-authenticates with the

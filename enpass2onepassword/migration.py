@@ -151,7 +151,14 @@ async def upload_to_onepassword(no_confirm,
     if not silent:
         entries = " remaining" if skip > 0 else ""
         click.echo(f"{click.style(ep_total, fg='green')}{entries} Enpass entries have been analyzed.")
-        click.echo(f"{click.style(op_total, fg='green')}{entries} 1Password entries will be created.")
+        login_total = len([item for item in op_items if item.category == ItemCategory.LOGIN])
+        pw_total = len([item for item in op_items if item.category == ItemCategory.PASSWORD])
+        click.echo(f'{click.style(op_total, fg='green')}{entries} 1Password entries will be created.')
+        click.echo(f'''
+Of these, {click.style(login_total, fg='cyan')} entries are created as Logins
+and {click.style(pw_total, fg='cyan')} entries are created as Passwords.
+For the remaining {click.style(op_total - login_total - pw_total, fg='cyan')} entries, the category is inferred.
+''')
 
     if not no_confirm:
         click.echo("Type 'y' to continue: ", nl=False)

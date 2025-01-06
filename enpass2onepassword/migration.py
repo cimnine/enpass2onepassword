@@ -59,7 +59,7 @@ async def migrate(ep_file,
 
     ep_items = enpass['items']
     ep_len = len(ep_items)
-    if skip >= ep_len - 1:
+    if skip >= ep_len:
         if not silent:
             click.secho(f"Skipping all {ep_len} Enpass entries.", fg='yellow')
         return
@@ -91,7 +91,7 @@ async def migrate(ep_file,
             websites = None
 
         sections = map_sections(ep_item)
-        fields = map_fields(ep_item)
+        fields, category = map_fields(ep_item, category)
 
         note = ep_item.get('note', None)
         if note:
@@ -182,6 +182,7 @@ async def upload_to_onepassword(no_confirm,
             raise click.Abort()
 
     if not silent:
+        click.echo()
         skipped = f" Skipped {skip} entries." if skip > 0 else ""
         click.echo(f"{click.style('Done.', fg='green')} Migrated {op_total} entries.{skipped}")
 
@@ -196,13 +197,14 @@ def map_sections(item):
                                if field['type'] == 'section']
 
 
-def map_fields(item):
+def map_fields(item, category):
     fields = item.get('fields', None)
     if not fields:
-        return []
+        return [], category
 
     current_section_uid = ''
     first_email = None
+    first_pin = None
     has_username = False
     has_password = False
 
@@ -220,39 +222,57 @@ def map_fields(item):
 
         field_id = str(field['uid'])
         section_id = current_section_uid
+        title = field['label'].lower()
 
-        if not has_username and field['type'] == 'username':
-            section_id = None
-            field_id = 'username'
-            has_username = True
-        elif not has_password and field['type'] == 'password':
-            section_id = None
-            field_id = 'password'
-            has_password = True
-        elif first_email is None and field['type'] == 'email':
-            field_id = 'email'
-            first_email = field['value']
+        if category == ItemCategory.LOGIN or category == ItemCategory.PASSWORD:
+            if not has_username and field['type'] == 'username':
+                section_id = None
+                field_id = 'username'
+                title = 'username'
+                has_username = True
+                if category == ItemCategory.PASSWORD:
+                    category = ItemCategory.LOGIN
+            elif not has_password and field['type'] == 'password':
+                section_id = None
+                field_id = 'password'
+                title = 'password'
+                has_password = True
+            elif first_email is None and field['type'] == 'email':
+                field_id = 'email'
+                first_email = field['value']
+            elif first_pin is None and field['type'] == 'pin':
+                field_id = 'pin'
+                first_pin = field['value']
 
         sensitive = field['sensitive'] != 0
 
         result.append(ItemField(
             id=field_id,
-            title=field['label'].lower(),
+            title=title,
             field_type=ItemFieldType.CONCEALED if sensitive else map_field_type(item, field),
             value=field['value'],
             section_id=section_id
         ))
 
-    if not has_username and first_email is not None:
+    if category == ItemCategory.LOGIN and not has_username and first_email is not None:
         result.append(ItemField(
             id='username',
-            title='Username',
+            title='username',
             field_type=ItemFieldType.TEXT,
             value=first_email,
             section_id=None
         ))
 
-    return result
+    if not has_password and first_pin is not None:
+        result.append(ItemField(
+            id='password',
+            title='PIN',
+            field_type=ItemFieldType.CONCEALED,
+            value=first_pin,
+            section_id=None
+        ))
+
+    return result, category
 
 
 field_type_map = {

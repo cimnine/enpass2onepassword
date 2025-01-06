@@ -1,4 +1,5 @@
 import json
+import time
 
 import click
 
@@ -12,15 +13,8 @@ from wakepy.modes import keep
 async def migrate(ep_file,
                   op_sa_name, op_sa_token, op_vault,
                   ignore_non_empty, no_confirm, silent, skip, no_wakelock,
-                  op_rate_limit_h, op_rate_limit_d):
-    try:
-        client = await Client.authenticate(auth=op_sa_token, integration_name=op_sa_name, integration_version="v1.0.0")
-    except Exception as e:
-        click.echo(f"An error occured while setting up the connection to 1Password: {click.style(e, fg='red')}",
-                   err=True)
-        click.echo("Check the 1Password Service Account name and token, and try again.")
-        raise click.Abort()
-
+                  op_rate_limit_h, op_rate_limit_d, op_client_validity_s):
+    client, _ = await get_op_client(op_sa_name, op_sa_token)
     vaults = await client.vaults.list_all()
 
     if not vaults:
@@ -121,44 +115,72 @@ async def migrate(ep_file,
         op_items.append(op_item)
 
     if no_wakelock:
-        await upload_to_onepassword(client, no_confirm, op_rate_limit_d, op_rate_limit_h, silent, skip, ep_items, op_items)
+        await upload_to_onepassword(no_confirm, op_sa_name, op_sa_token, op_rate_limit_d, op_rate_limit_h,
+                                    op_client_validity_s, silent, skip, ep_items, op_items)
     else:
         with keep.running():
-            await upload_to_onepassword(client, no_confirm, op_rate_limit_d, op_rate_limit_h, silent, skip, ep_items, op_items)
+            await upload_to_onepassword(no_confirm, op_sa_name, op_sa_token, op_rate_limit_d, op_rate_limit_h,
+                                        op_client_validity_s, silent, skip, ep_items, op_items)
 
 
-async def upload_to_onepassword(client, no_confirm, op_rate_limit_d, op_rate_limit_h, silent, skip, ep_items, op_items):
+async def get_op_client(op_sa_name, op_sa_token):
+    try:
+        client = await Client.authenticate(auth=op_sa_token, integration_name=op_sa_name, integration_version="v1.0.0")
+    except Exception as e:
+        click.echo(f"An error occurred while setting up the connection to 1Password: {click.style(e, fg='red')}",
+                   err=True)
+        click.echo("Check the 1Password Service Account name and token, and try again.")
+        raise click.Abort()
+
+    return client, time.time()
+
+
+async def upload_to_onepassword(no_confirm,
+                                op_sa_name, op_sa_token,
+                                op_rate_limit_d, op_rate_limit_h, op_client_validity_s,
+                                silent, skip,
+                                ep_items, op_items):
     hourly_rate = Rate(op_rate_limit_h, Duration.HOUR)
     daily_rate = Rate(op_rate_limit_d, Duration.DAY)
     bucket = InMemoryBucket([hourly_rate, daily_rate])
     limiter = Limiter(bucket, max_delay=3_900_000)  # 1h 5min
+
     ep_total = len(ep_items)
     op_total = len(op_items)
+
     if not silent:
         entries = " remaining" if skip > 0 else ""
         click.echo(f"{click.style(ep_total, fg='green')}{entries} Enpass entries have been analyzed.")
         click.echo(f"{click.style(op_total, fg='green')}{entries} 1Password entries will be created.")
+
     if not no_confirm:
         click.echo("Type 'y' to continue: ", nl=False)
         c = click.getchar()
         click.echo()
         if c != 'y':
             raise click.Abort()
-    for i, op_item in enumerate(op_items):
-        if not silent and i % 10 == 0:
-            if i > 0:
-                click.echo()
-            click.echo(f"Creating entry {skip + i} ({i} of {op_total}) ", nl=False)
 
+    (client, client_created) = await get_op_client(op_sa_name, op_sa_token)
+    for i, op_item in enumerate(op_items):
         try:
             # noinspection PyAsyncCall
             limiter.try_acquire('onepassword-write')
+
+            client_age_seconds = time.time() - client_created
+            if client_age_seconds > op_client_validity_s:
+                (client, client_created) = await get_op_client(op_sa_name, op_sa_token)
+
+            if not silent and i % 10 == 0:
+                if i > 0:
+                    click.echo()
+                click.echo(f"Creating entry {skip + i} ({i} of {op_total}) ", nl=False)
 
             await client.items.create(op_item)
             click.echo(".", nl=False)
         except Exception as e:
             click.echo(f"Error creating entry {skip + i}: {e}", err=True)
             raise click.Abort()
+
     if not silent:
         skipped = f" Skipped {skip} entries." if skip > 0 else ""
         click.echo(f"{click.style('Done.', fg='green')} Migrated {op_total} entries.{skipped}")

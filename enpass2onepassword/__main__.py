@@ -108,16 +108,27 @@ def is_zero_or_positive(ctx, param, value):
               See https://developer.1password.com/docs/service-accounts/rate-limits/ for more info.
               '''
               )
+@click.option('--op-client-validity', 'client_validity_s',
+              type=click.INT, callback=is_positive, default=30*60, show_default=True,
+              help='''
+              This tool authenticates with the 1Password server in order to import entries.
+              This authentication is only valid for a certain amount of time.
+              With this parameter, you can adjust the time after which a this tool re-authenticates with the
+              1Password server.
+              
+              The value is in seconds.
+              '''
+              )
 @click.argument("enpass_json_export",
                 default='export.json', type=click.File("rb"), envvar='ENPASS_FILE', required=True)
 def main(enpass_json_export,
          sa_name, sa_token, op_vault,
-         ignore_non_empty, no_confirm, silent, skip, no_wakelock, rate_limit_h, rate_limit_d):
+         ignore_non_empty, no_confirm, silent, skip, no_wakelock, rate_limit_h, rate_limit_d, client_validity_s):
     """Adds items from an Enpass JSON export to a 1Password vault through the 1Password API."""
     asyncio.run(
         migrate(enpass_json_export,
                 sa_name, sa_token, op_vault,
-                ignore_non_empty, no_confirm, silent, skip, no_wakelock, rate_limit_h, rate_limit_d))
+                ignore_non_empty, no_confirm, silent, skip, no_wakelock, rate_limit_h, rate_limit_d, client_validity_s))
 
 
 if __name__ == '__main__':

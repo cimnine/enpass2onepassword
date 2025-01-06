@@ -115,6 +115,14 @@ Options:
                                   per hour for Business accounts.
                                   
                                   See https://developer.1password.com/docs/service-accounts/rate-limits/ for more info.  [default: 1000]
+  --op-client-validity INTEGER    This tool authenticates with the 1Password
+                                  server in order to import entries. This
+                                  authentication is only valid for a certain
+                                  amount of time. With this parameter, you can
+                                  adjust the time after which a this tool re-
+                                  authenticates with the 1Password server.
+                                  
+                                  The value is in seconds.  [default: 1800]
   --help                          Show this message and exit.
 ```
 

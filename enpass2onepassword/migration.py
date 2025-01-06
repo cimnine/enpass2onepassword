@@ -209,11 +209,13 @@ def map_fields(item, category):
     if not fields:
         return [], category
 
+    has_username = any(field['type'] == 'username' for field in fields)
+    has_password = any(field['type'] == 'password' for field in fields)
+
+    main_username_field_added = False
+    main_password_field_added = False
+
     current_section_uid = ''
-    first_email = None
-    first_pin = None
-    has_username = False
-    has_password = False
 
     result = []
     for field in sorted(fields, key=lambda f: f['order']):
@@ -231,25 +233,30 @@ def map_fields(item, category):
         section_id = current_section_uid
         title = field['label'].lower()
 
-        if category == ItemCategory.LOGIN or category == ItemCategory.PASSWORD:
-            if not has_username and field['type'] == 'username':
-                section_id = None
-                field_id = 'username'
-                title = 'username'
-                has_username = True
-                if category == ItemCategory.PASSWORD:
-                    category = ItemCategory.LOGIN
-            elif not has_password and field['type'] == 'password':
-                section_id = None
-                field_id = 'password'
-                title = 'password'
-                has_password = True
-            elif first_email is None and field['type'] == 'email':
-                field_id = 'email'
-                first_email = field['value']
-            elif first_pin is None and field['type'] == 'pin':
-                field_id = 'pin'
-                first_pin = field['value']
+        if not main_password_field_added and field['type'] == 'password':
+            # set this password as main password
+            section_id = None
+            field_id = 'password'
+            title = 'password'
+            main_password_field_added = True
+        elif not has_password and not main_password_field_added and field['type'] == 'pin':
+            # use this pin as main password
+            section_id = None
+            field_id = 'password'
+            title = 'password'
+            main_password_field_added = True
+        elif not main_username_field_added and field['type'] == 'username':
+            # use pin as password
+            section_id = None
+            field_id = 'username'
+            title = 'username'
+            main_username_field_added = True
+        elif not has_username and not main_username_field_added and field['type'] == 'email':
+            # use email as username
+            section_id = None
+            field_id = 'username'
+            title = 'username'
+            main_username_field_added = True
 
         sensitive = field['sensitive'] != 0
 
@@ -261,23 +268,10 @@ def map_fields(item, category):
             section_id=section_id
         ))
 
-    if category == ItemCategory.LOGIN and not has_username and first_email is not None:
-        result.append(ItemField(
-            id='username',
-            title='username',
-            field_type=ItemFieldType.TEXT,
-            value=first_email,
-            section_id=None
-        ))
-
-    if not has_password and first_pin is not None:
-        result.append(ItemField(
-            id='password',
-            title='PIN',
-            field_type=ItemFieldType.CONCEALED,
-            value=first_pin,
-            section_id=None
-        ))
+    if main_username_field_added and category != ItemCategory.LOGIN:
+        category = ItemCategory.LOGIN
+    elif not main_username_field_added and main_password_field_added and ItemCategory != ItemCategory.PASSWORD:
+        category = ItemCategory.PASSWORD
 
     return result, category
 

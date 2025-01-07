@@ -4,18 +4,28 @@ Tool to migrate from Enpass to 1Password.
 This tool takes [an Enpass JSON export](https://support.enpass.io/app/import-export/importing_data_from_enpass.htm)
 and imports it via the [1Password SDK](https://github.com/1Password/onepassword-sdk-python).
 
+## Requirements
+
+- You need [Python 3][py] installed on your system.
+- You need `pip` installed on your system.
+- You need to know how to open a _Terminal_ aka _Shell_.
+  - On macOS, for example _Terminal.app_.
+  - On Windows, for example _PowerShell_.
+  - On Linux: You know your way.
+
+[py]: https://www.python.org/downloads/
+
 ## Quick-Start
 
-1. Follow the [Preparations](#Preparations) section below.
-2. If on Windows: Install [Python](https://www.python.org/downloads/) on your computer
-3. Install this tool, by running the following command in a terminal of your choosing: `pip install enpass2onepassword`
-4. Run this tool, by running the following command in a terminal of your choosing: `enpass2onepassword`
-5. Fill in the information
+1. Follow the [_Preparations_ section](#Preparations) below.
+2. Install this tool, by running the following command in a terminal of your choosing:
+   `python3 -m pip install enpass2onepassword`
+3. Run this tool, by running the following command in a terminal of your choosing:
+   `enpass2onepassword`
+4. Fill in the information
    - _Sa name_: The name of your 1Password Service Account
    - _Sa token_: The token (aka credential) for the 1Password Service Account.
    - _Op vault_: The name of the empty(!) 1Password Vault.
-
-[py]: https://www.python.org/downloads/
 
 ## Preparations
 

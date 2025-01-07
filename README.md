@@ -1,8 +1,8 @@
 # enpass2onepassword
 
 Tool to migrate from Enpass to 1Password.
-This tool takes an Enpass JSON export
-and imports it via the 1Password SDK.
+This tool takes [an Enpass JSON export](https://support.enpass.io/app/import-export/importing_data_from_enpass.htm)
+and imports it via the [1Password SDK](https://github.com/1Password/onepassword-sdk-python).
 
 ## Quick-Start
 

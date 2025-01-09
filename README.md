@@ -9,9 +9,9 @@ and imports it via the [1Password SDK](https://github.com/1Password/onepassword-
 - You need [Python 3][py] installed on your system.
 - You need `pip` installed on your system.
 - You need to know how to open a _Terminal_ aka _Shell_.
-    - On macOS, for example _Terminal.app_.
-    - On Windows, for example _PowerShell_.
-    - On Linux: You know your way.
+  - On macOS, for example _Terminal.app_.
+  - On Windows, for example _PowerShell_.
+  - On Linux: You know your way.
 
 [py]: https://www.python.org/downloads/
 
@@ -24,33 +24,33 @@ and imports it via the [1Password SDK](https://github.com/1Password/onepassword-
    uvx enpass2onepassword ~/Documents/no_backup/enpass_export.json
    ```
 4. Fill in the information
-    - _Sa name_: The name of your 1Password Service Account
-    - _Sa token_: The token (aka credential) for the 1Password Service Account.
-    - _Op vault_: The name of the empty(!) 1Password Vault.
+   - _Sa name_: The name of your 1Password Service Account
+   - _Sa token_: The token (aka credential) for the 1Password Service Account.
+   - _Op vault_: The name of the empty(!) 1Password Vault.
 
 [uv-install]: https://docs.astral.sh/uv/getting-started/installation/
 
 ## Preparations
 
 1. Create a [new 1Password Vault][op-vault].
-    - Call the _Vault_ whatever you like, for example `Enpass`.
-    - See [the official documentation][op-docs-vault] for further guidance.
+   - Call the _Vault_ whatever you like, for example `Enpass`.
+   - See [the official documentation][op-docs-vault] for further guidance.
 2. Create a [1Password Service Account][op-sa].
-    - Call the _Service Account_ whatever you like, for example `enpass2onepassword`
-    - Use the cog ⚙️ to add the _write permission_ to the _Service Account_
-    - See [the official documentation][op-docs-sa] for further guidance.
+   - Call the _Service Account_ whatever you like, for example `enpass2onepassword`
+   - Use the cog ⚙️ to add the _write permission_ to the _Service Account_
+   - See [the official documentation][op-docs-sa] for further guidance.
 3. Copy the _Service Account Token_ (and/or save it to 1Password).
 4. Export your _Enpass Vault_ as JSON, for example as `export.json`.
-    - ⚠️ The export is unencrypted!
-    - Don't forget to delete the file after a successful import!
-    - Ensure, that you export the vault to a place that is not synced to another computer
-      and which is not backed up automatically.
-        - If you use _Time Machine_ on _macOS_, create a folder `no_backup` in your _Documents_.
-          Then open the _System Settings_.
-          Under _General_ click on _Time Machine_.
-          Now click on _Options…_.
-          Use the `+`-button to add the folder you just created to the _Exclude from Backups_ list.
-    - A good place would also be an SD card or a USB drive with an encrypted filesystem.
+   - ⚠️ The export is unencrypted!
+   - Don't forget to delete the file after a successful import!
+   - Ensure, that you export the vault to a place that is not synced to another computer
+     and which is not backed up automatically.
+     - If you use _Time Machine_ on _macOS_, create a folder `no_backup` in your _Documents_.
+       Then open the _System Settings_.
+       Under _General_ click on _Time Machine_.
+       Now click on _Options…_.
+       Use the `+`-button to add the folder you just created to the _Exclude from Backups_ list.
+   - A good place would also be an SD card or a USB drive with an encrypted filesystem.
 
 [op-vault]: https://my.1password.eu/vaults/new/custom
 [op-docs-vault]: https://support.1password.com/create-share-vaults/

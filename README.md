@@ -217,6 +217,12 @@ poetry install
 poetry run enpass2onepassword
 ```
 
+Update dependencies:
+
+```shell
+poetry update
+```
+
 [poetry]: https://python-poetry.org/
 
 ## Copyright and License

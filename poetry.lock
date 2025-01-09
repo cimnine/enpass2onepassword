@@ -280,5 +280,5 @@ jeepney = {version = ">=0.7.1", markers = "platform_system == \"Linux\" or platf
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.13"
-content-hash = "e9f66be080648f0044a9a63f1616964694cd395bd91882fd4790351a22ab5054"
+python-versions = "^3.10"
+content-hash = "952d01f7d41cff0ebba5137255ddea83984685a54f15524d07ead88debad3e86"

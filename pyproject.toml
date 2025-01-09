@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "enpass2onepassword"
-version = "0.1.1"
+version = "0.1.2"
 description = "Tool to migrate from Enpass to 1Password"
 authors = ["Christian Mäder <mail@cimnine.ch>"]
 readme = "README.md"

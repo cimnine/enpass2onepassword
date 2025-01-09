@@ -1,5 +1,6 @@
 import json
 import time
+from contextlib import contextmanager
 
 import click
 
@@ -46,18 +47,8 @@ async def migrate(ep_file,
             err=True)
         raise click.Abort()
 
-    enpass = json.load(ep_file)
-    if not enpass:
-        click.echo(
-            message=f"Unable to load the given Enpass export.",
-            err=True)
-        raise click.Abort()
+    ep_folders, ep_items = await load_enpass_json(ep_file)
 
-    folders_mapping = {}
-    for folder in enpass['folders']:
-        folders_mapping[folder['uuid']] = folder['title']
-
-    ep_items = enpass['items']
     ep_len = len(ep_items)
     if skip >= ep_len:
         if not silent:
@@ -67,6 +58,40 @@ async def migrate(ep_file,
         click.echo(f"Skipping {click.style(skip, fg='green')} entries of {ep_len} in total.")
         ep_items = ep_items[skip:]
 
+    op_items = await map_items(ep_folders, ep_items, op_vault_id)
+
+    if len(op_items) == 0:
+        click.secho(f"No entries to create.", fg='yellow', bold=True)
+        return
+
+    with keep_running(not no_wakelock):
+        await upload_to_onepassword(no_confirm, op_sa_name, op_sa_token, op_rate_limit_d, op_rate_limit_h,
+                                    op_client_validity_s, silent, skip, ep_items, op_items)
+
+
+async def load_enpass_json(ep_file):
+    enpass = json.load(ep_file)
+    if not enpass:
+        click.echo(message=f"Unable to load the given Enpass export.", err=True)
+        raise click.Abort()
+
+    return enpass['folders'], enpass['items']
+
+
+@contextmanager
+def keep_running(enabled):
+    if not enabled:
+        yield
+
+    with keep.running():
+        yield
+
+
+async def map_items(ep_folders, ep_items, op_vault_id):
+    folders_mapping = {}
+    for folder in ep_folders:
+        folders_mapping[folder['uuid']] = folder['title']
+
     op_items = []
     for ep_item in ep_items:
         if ep_item.get('trashed', 0) != 0:
@@ -74,44 +99,10 @@ async def migrate(ep_file,
         if ep_item.get('archived', 0) != 0:
             continue
 
-        category = map_category(ep_item)
-        autofill_behavior = AutofillBehavior.ANYWHEREONWEBSITE \
-            if ep_item['auto_submit'] != 0 \
-            else AutofillBehavior.NEVER
-
-        if category == ItemCategory.PASSWORD or category == ItemCategory.LOGIN:
-            websites = ([Website(url=field['value'], label=field['label'], autofill_behavior=autofill_behavior) for
-                         field in
-                         ep_item['fields'] if field['type'] == 'url']
-                        +
-                        [Website(url=field['value'], label=field['label'],
-                                 autofill_behavior=AutofillBehavior.ANYWHEREONWEBSITE) for field in
-                         ep_item['fields'] if field['type'] == '.Android#'])
-        else:
-            websites = None
-
-        sections = map_sections(ep_item)
-        fields, category = map_fields(ep_item, category)
-
-        op_item = ItemCreateParams(
-            title=ep_item['title'],
-            vault_id=op_vault_id,
-            tags=[folders_mapping[uuid] for uuid in ep_item['folders']] if 'folders' in ep_item else None,
-            category=category,
-            sections=sections,
-            websites=websites,
-            fields=fields,
-            notes=ep_item.get('note', None)
-        )
+        op_item = await map_item(ep_item, folders_mapping, op_vault_id)
         op_items.append(op_item)
 
-    if no_wakelock:
-        await upload_to_onepassword(no_confirm, op_sa_name, op_sa_token, op_rate_limit_d, op_rate_limit_h,
-                                    op_client_validity_s, silent, skip, ep_items, op_items)
-    else:
-        with keep.running():
-            await upload_to_onepassword(no_confirm, op_sa_name, op_sa_token, op_rate_limit_d, op_rate_limit_h,
-                                        op_client_validity_s, silent, skip, ep_items, op_items)
+    return op_items
 
 
 async def get_op_client(op_sa_name, op_sa_token):
@@ -193,6 +184,40 @@ def map_sections(item):
 
     return default_sections + [ItemSection(id=str(field['uid']), title=field['label']) for field in fields
                                if field['type'] == 'section']
+
+
+async def map_item(ep_item, folders_mapping, op_vault_id):
+    category = map_category(ep_item)
+    autofill_behavior = AutofillBehavior.ANYWHEREONWEBSITE \
+        if ep_item['auto_submit'] != 0 \
+        else AutofillBehavior.NEVER
+
+    if category == ItemCategory.PASSWORD or category == ItemCategory.LOGIN:
+        websites = ([Website(url=field['value'], label=field['label'], autofill_behavior=autofill_behavior) for
+                     field in
+                     ep_item['fields'] if field['type'] == 'url']
+                    +
+                    [Website(url=field['value'], label=field['label'],
+                             autofill_behavior=AutofillBehavior.ANYWHEREONWEBSITE) for field in
+                     ep_item['fields'] if field['type'] == '.Android#'])
+    else:
+        websites = None
+
+    sections = map_sections(ep_item)
+    fields, category = map_fields(ep_item, category)
+
+    op_item = ItemCreateParams(
+        title=ep_item['title'],
+        vault_id=op_vault_id,
+        tags=[folders_mapping[uuid] for uuid in ep_item['folders']] if 'folders' in ep_item else None,
+        category=category,
+        sections=sections,
+        websites=websites,
+        fields=fields,
+        notes=ep_item.get('note', None)
+    )
+
+    return op_item
 
 
 def map_fields(item, category):

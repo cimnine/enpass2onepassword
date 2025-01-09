@@ -3,6 +3,7 @@ import asyncio
 
 import click
 
+from enpass2onepassword import __version__, __distribution_name__
 from enpass2onepassword.migration import migrate
 
 
@@ -199,6 +200,17 @@ def main(
     client_validity_s,
 ):
     """Adds items from an Enpass JSON export to a 1Password vault through the 1Password API."""
+    if not silent:
+        click.echo(
+            f"{click.style(__distribution_name__, bold=True)} version {click.style(__version__, fg='cyan')}. "
+            f"(c) by {click.style('Christian Mäder', bold=True)}. "
+            f"Source code under {click.style('GPL 3.0', bold=True)} or later."
+        )
+        click.echo()
+        click.echo(
+            f"Reading file '{click.style(enpass_json_export.name, fg='green')}'…"
+        )
+
     asyncio.run(
         migrate(
             enpass_json_export,

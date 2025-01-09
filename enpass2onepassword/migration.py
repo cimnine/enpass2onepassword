@@ -17,6 +17,8 @@ from onepassword.client import Client
 from pyrate_limiter import Duration, InMemoryBucket, Limiter, Rate
 from wakepy.modes import keep
 
+from enpass2onepassword import __version__
+
 
 async def migrate(
     ep_file,
@@ -139,7 +141,9 @@ async def map_items(ep_folders, ep_items, op_vault_id):
 async def get_op_client(op_sa_name, op_sa_token):
     try:
         client = await Client.authenticate(
-            auth=op_sa_token, integration_name=op_sa_name, integration_version="v1.0.0"
+            auth=op_sa_token,
+            integration_name=op_sa_name,
+            integration_version=f"v{__version__}",
         )
     except Exception as e:
         click.echo(

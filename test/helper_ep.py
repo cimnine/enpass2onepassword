@@ -1,7 +1,5 @@
 from pathlib import Path
 
-import pytest
-
 from enpass2onepassword.migration import load_enpass_json
 
 

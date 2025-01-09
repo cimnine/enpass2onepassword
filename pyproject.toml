@@ -1,13 +1,15 @@
-[tool.poetry]
+[project]
 name = "enpass2onepassword"
 version = "0.1.2"
 description = "Tool to migrate from Enpass to 1Password"
-authors = ["Christian Mäder <mail@cimnine.ch>"]
+authors = [{ name = "Christian Mäder", email = "mail@cimnine.ch" }]
+requires-python = "~=3.10"
 readme = "README.md"
-packages = [{ include = "enpass2onepassword" }]
 license = "GPL-3.0-or-later"
-repository = "https://github.com/cimnine/enpass2onepassword"
-keywords = ["1password", "enpass"]
+keywords = [
+    "1password",
+    "enpass",
+]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Environment :: Console",
@@ -19,33 +21,47 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Topic :: Desktop Environment",
     "Topic :: Office/Business",
-    "Topic :: Utilities"
+    "Topic :: Utilities",
+]
+dependencies = [
+    "click>=8.1.8,<9",
+    "onepassword-sdk>=0.1.5,<0.2",
+    "aiostream>=0.6.4,<0.7",
+    "pyrate-limiter>=3.7.0,<4",
+    "wakepy>=0.10.1,<0.11",
 ]
 
-[tool.poetry.dependencies]
-python = "^3.10"
-click = "^8.1.8"
-onepassword-sdk = "^0.1.5"
-aiostream = "^0.6.4"
-pyrate-limiter = "^3.7.0"
-wakepy = "^0.10.1"
+[project.urls]
+Repository = "https://github.com/cimnine/enpass2onepassword"
 
-[tool.poetry.group.dev.dependencies]
-black = "^24.10.0"
-isort = "^5.13.2"
-flake8 = "^7.1.1"
-pytest = "^8.3.4"
-pytest-aio = "^1.9.0"
+[project.scripts]
+enpass2onepassword = "enpass2onepassword.__main__:main"
+
+[dependency-groups]
+dev = [
+    "black>=24.10.0,<25",
+    "isort>=5.13.2,<6",
+    "flake8>=7.1.1,<8",
+    "pytest>=8.3.4,<9",
+    "pytest-aio>=1.9.0,<2",
+    "ruff>=0.9.0",
+]
+
+[tool.hatch.build.targets.sdist]
+include = ["enpass2onepassword"]
+
+[tool.hatch.build.targets.wheel]
+include = ["enpass2onepassword"]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.scripts]
-enpass2onepassword = "enpass2onepassword.__main__:main"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.pytest.ini_options]
 addopts = ["--import-mode=importlib"]
+
+[tool.isort]
+extend_skip = ["megalinter-reports"]
 
 [virtualenvs]
 create = true

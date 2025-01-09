@@ -208,22 +208,22 @@ jq '{folders: .folders, items: [.items[] | select(.category == "uncategorized")]
 
 ## Development
 
-This project uses [poetry][poetry] for dependency management, building and publishing.
+This project uses [uv][uv] for dependency management, building and publishing.
 
 Run the development build:
 
 ```shell
-poetry install
-poetry run enpass2onepassword
+uv sync
+uv run enpass2onepassword
 ```
 
 Update dependencies:
 
 ```shell
-poetry update
+uv lock --upgrade
 ```
 
-[poetry]: https://python-poetry.org/
+[uv]: https://docs.astral.sh/uv/
 
 ## Release
 
@@ -235,15 +235,7 @@ Release procedure:
 4. `git tag 0.1.0`
 5. `git push --tags`
 
-The rest is taken care of by a GitHub Action.
-
-### Manual Release
-
-```shell
-poetry build
-poetry config pypi-token.pypi "$(op read 'op://Private/PyPi/enpass2onepassword token')"
-poetry publish
-```
+The rest is taken care of by the _Release_ GitHub Action.
 
 ## Linter
 

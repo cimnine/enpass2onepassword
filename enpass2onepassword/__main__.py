@@ -2,6 +2,7 @@
 import asyncio
 
 import click
+
 from enpass2onepassword.migration import migrate
 
 

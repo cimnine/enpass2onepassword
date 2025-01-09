@@ -32,8 +32,8 @@ jobs:
           path: ./.venv
           key: venv-${{ hashFiles('poetry.lock') }}
       - name: Install Requirements
-        run: poetry install --sync --no-interaction
+        run: poetry install --with=dev --sync --no-interaction
       - name: Build
         run: poetry build
-#      - name: Test
-#        run: poetry run pytest -v
+      - name: Test
+        run: poetry run pytest --verbose

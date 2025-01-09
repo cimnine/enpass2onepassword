@@ -4,7 +4,7 @@ version = "0.1.2"
 description = "Tool to migrate from Enpass to 1Password"
 authors = ["Christian Mäder <mail@cimnine.ch>"]
 readme = "README.md"
-packages = [{include = "enpass2onepassword"}]
+packages = [{ include = "enpass2onepassword" }]
 license = "GPL-3.0-or-later"
 repository = "https://github.com/cimnine/enpass2onepassword"
 keywords = ["1password", "enpass"]
@@ -34,6 +34,8 @@ wakepy = "^0.10.1"
 black = "^24.10.0"
 isort = "^5.13.2"
 flake8 = "^7.1.1"
+pytest = "^8.3.4"
+pytest-aio = "^1.9.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -41,6 +43,9 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 enpass2onepassword = "enpass2onepassword.__main__:main"
+
+[tool.pytest.ini_options]
+addopts = ["--import-mode=importlib"]
 
 [virtualenvs]
 create = true

@@ -1,0 +1,44 @@
+{
+  "folders": [
+    {
+      "icon": "1008",
+      "parent_uuid": "",
+      "title": "Label A",
+      "updated_at": 1546437859,
+      "uuid": "249b5f3b-1bde-41d8-9f8d-c32fedae4284"
+    },
+    {
+      "icon": "1008",
+      "parent_uuid": "",
+      "title": "Label B",
+      "updated_at": 1549229245,
+      "uuid": "61688820-0abb-4b95-a4af-e643c75fe2aa"
+    }
+  ],
+  "items": [
+    {
+      "archived": 1,
+      "auto_submit": 1,
+      "category": "note",
+      "category_name": "Note",
+      "createdAt": 1668294736,
+      "favorite": 0,
+      "field_updated_at": 1668294736,
+      "icon": {
+        "fav": "",
+        "image": {
+          "file": "misc/secure_note"
+        },
+        "type": 1,
+        "uuid": ""
+      },
+      "note": "Line 1\nLine 2",
+      "subtitle": "Line 1",
+      "template_type": "note.default",
+      "title": "Random Note",
+      "trashed": 0,
+      "updated_at": 1668294736,
+      "uuid": "533f6db7-9cc5-47f7-97e9-0a49f63a32df"
+    }
+  ]
+}

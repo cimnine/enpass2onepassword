@@ -6,6 +6,7 @@
 !.cspell.json
 !.jscpd.json
 !.editorconfig-checker.json
+!.devskim.json
 
 dist/
 __pycache__

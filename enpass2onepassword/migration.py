@@ -4,8 +4,15 @@ from contextlib import contextmanager
 
 import click
 from aiostream import stream
-from onepassword import (AutofillBehavior, ItemCategory, ItemCreateParams,
-                         ItemField, ItemFieldType, ItemSection, Website)
+from onepassword import (
+    AutofillBehavior,
+    ItemCategory,
+    ItemCreateParams,
+    ItemField,
+    ItemFieldType,
+    ItemSection,
+    Website,
+)
 from onepassword.client import Client
 from pyrate_limiter import Duration, InMemoryBucket, Limiter, Rate
 from wakepy.modes import keep

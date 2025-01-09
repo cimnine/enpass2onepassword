@@ -61,7 +61,9 @@ build-backend = "hatchling.build"
 addopts = ["--import-mode=importlib"]
 
 [tool.isort]
+profile = "black"
 extend_skip = ["megalinter-reports"]
+skip_gitignore = true
 
 [virtualenvs]
 create = true

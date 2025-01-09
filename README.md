@@ -17,7 +17,7 @@ and imports it via the [1Password SDK](https://github.com/1Password/onepassword-
 
 ## Quick-Start
 
-1. Follow the [_Preparations_ section](#Preparations) below.
+1. Follow the [_Preparations_ section](#preparations) below.
 2. Install this tool, by running the following command in a terminal of your choosing:
    `python3 -m pip install enpass2onepassword`
 3. Run this tool, by running the following command in a terminal of your choosing:
@@ -36,8 +36,8 @@ and imports it via the [1Password SDK](https://github.com/1Password/onepassword-
    - Call the _Service Account_ whatever you like, for example `enpass2onepassword`
    - Use the cog ⚙️ to add the _write permission_ to the _Service Account_
    - See [the official documentation][op-docs-sa] for further guidance.
-3. Copy the _Service Account Token_ (and/or save it to 1password). 
-4. Export your _Enpass Vault_ as JSON, for example as `export.json`. 
+3. Copy the _Service Account Token_ (and/or save it to 1password).
+4. Export your _Enpass Vault_ as JSON, for example as `export.json`.
    - The export is unencrypted!
    - Don't forget to delete the file after a successful import!
    - Ensure, that you export the vault to a place that is not synced to another computer
@@ -61,7 +61,7 @@ Options:
   -n, --op-sa-name, --sa TEXT     The 1Password service account name. You
                                   chose this when creating the 1Password
                                   service account.
-                                  
+
                                   Can also be supplied as environment variable
                                   'OP_SERVICE_ACCOUNT_NAME'.  [default:
                                   enpass2onepassword; required]
@@ -69,7 +69,7 @@ Options:
                                   The 1Password service account token. It was
                                   shown to you when you created the 1Password
                                   service account.
-                                  
+
                                   Can also be supplied as environment variable
                                   'OP_SERVICE_ACCOUNT_TOKEN'.  [required]
   -o, --op-vault, --vault TEXT    The name of the 1Password vault. All Enpass
@@ -77,7 +77,7 @@ Options:
                                   vault. This 1Password vault must be empty!
                                   Also, the service account must have write
                                   permissions to it.
-                                  
+
                                   Can also be supplied as environment variable
                                   'OP_VAULT'.  [default: Enpass; required]
   --ignore-non-empty-vault        By default, this tool will stop if it
@@ -96,7 +96,7 @@ Options:
                                   computer to go to sleep while the import is
                                   running. Use this flag to disable this
                                   behavior.
-                                  
+
                                   When this flag is defined, then the computer
                                   might go to sleep and interrupt your import.
                                   The import is usually resumed, when your
@@ -115,7 +115,7 @@ Options:
                                   requests per hour for private, family and
                                   team accounts and 1'000 requests per hour
                                   for Business accounts.
-                                  
+
                                   See https://developer.1password.com/docs/service-accounts/rate-limits/ for more info.  [default: 100]
   --op-rate-limit-daily INTEGER   1Password enforces a write request rate
                                   limit per 1Password Account. The daily limit
@@ -123,7 +123,7 @@ Options:
                                   for private and family accounts, 5'000 per
                                   day for Teams accounts and 50'000 requests
                                   per hour for Business accounts.
-                                  
+
                                   See https://developer.1password.com/docs/service-accounts/rate-limits/ for more info.  [default: 1000]
   --op-client-validity INTEGER    This tool authenticates with the 1Password
                                   server in order to import entries. This
@@ -131,7 +131,7 @@ Options:
                                   amount of time. With this parameter, you can
                                   adjust the time after which a this tool re-
                                   authenticates with the 1Password server.
-                                  
+
                                   The value is in seconds.  [default: 1800]
   --help                          Show this message and exit.
 ```
@@ -244,6 +244,17 @@ poetry build
 poetry config pypi-token.pypi "$(op read 'op://Private/PyPi/enpass2onepassword token')"
 poetry publish
 ```
+
+## Linter
+
+This project uses [MegaLinter](https://megalinter.io/latest/).
+To run MegaLinter locally:
+
+```shell
+npx mega-linter-runner
+```
+
+This requires a valid Docker-compatible container runtime to be available, like [Podman](https://podman.io/).
 
 ## Copyright and License
 

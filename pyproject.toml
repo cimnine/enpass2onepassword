@@ -30,6 +30,11 @@ aiostream = "^0.6.4"
 pyrate-limiter = "^3.7.0"
 wakepy = "^0.10.1"
 
+[tool.poetry.group.dev.dependencies]
+black = "^24.10.0"
+isort = "^5.13.2"
+flake8 = "^7.1.1"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

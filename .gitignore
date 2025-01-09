@@ -1,4 +1,13 @@
+# Prevent enpass json from being added accidentially
 *.json
+
+# Explicitely exclude all relevant JSON files
 !renovate.json
+!.cspell.json
+!.jscpd.json
+!.editorconfig-checker.json
+
 dist/
 __pycache__
+
+megalinter-reports/

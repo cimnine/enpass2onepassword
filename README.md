@@ -225,6 +225,26 @@ poetry update
 
 [poetry]: https://python-poetry.org/
 
+## Release
+
+Release procedure:
+
+1. Edit the version in `pyproject.toml`
+2. Commit the change
+3. `git push`
+4. Tag the release with the same version
+5. `git push --tags`
+
+The rest is taken care of by a GitHub Action.
+
+### Manual Release
+
+```shell
+poetry build
+poetry config pypi-token.pypi "$(op read 'op://Private/PyPi/enpass2onepassword token')"
+poetry publish
+```
+
 ## Copyright and License
 
 Copyright © 2025 Christian Mäder.

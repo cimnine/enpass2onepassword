@@ -314,7 +314,7 @@ category_map = {
     'note': ItemCategory.SECURENOTE,
     'password': ItemCategory.PASSWORD,
     'travel': ItemCategory.PASSPORT,
-    'uncategorized': ItemCategory.SECURENOTE,
+    'uncategorized': ItemCategory.LOGIN,
 }
 
 

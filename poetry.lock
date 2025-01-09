@@ -70,37 +70,37 @@ trio = ["async_generator", "trio"]
 
 [[package]]
 name = "onepassword-sdk"
-version = "0.1.5"
+version = "0.1.6"
 description = "The 1Password Python SDK offers programmatic read access to your secrets in 1Password in an interface native to Python."
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "onepassword_sdk-0.1.5-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:b79b7f4cc1fba8480473e0b250e66df80e5411e58bc5432e913f47f6d50fb057"},
-    {file = "onepassword_sdk-0.1.5-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:2324246dd73a7705d5be40018f68129177b438ceff1331aaef546d64993709e9"},
-    {file = "onepassword_sdk-0.1.5-cp310-cp310-manylinux_2_32_aarch64.whl", hash = "sha256:c445e758c203f207bda4ec3a3241ef89034174cdc07f9b9ca544318293023ca3"},
-    {file = "onepassword_sdk-0.1.5-cp310-cp310-manylinux_2_32_x86_64.whl", hash = "sha256:a0ab735b00197ce0f6eca40137ccd87f276ef069638f3abf9dfed9c51ec70411"},
-    {file = "onepassword_sdk-0.1.5-cp310-cp310-win_amd64.whl", hash = "sha256:91d3a8d854dfeeb899607c3b17f75e0f60c41514023c65e29ffbe463cb37783b"},
-    {file = "onepassword_sdk-0.1.5-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:e6cfef9dda2ae7e7116b139dec105b8917e4315072cdb7b29f62599687f0cf77"},
-    {file = "onepassword_sdk-0.1.5-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:aeca49b7bfad5a46f0c2ab58f086056f821ec2deca178bb69fd5decd94a3ebcc"},
-    {file = "onepassword_sdk-0.1.5-cp311-cp311-manylinux_2_32_aarch64.whl", hash = "sha256:af6f7a983b43c1814793faf936744f1d4428eed85e46ea3f0deaac4ab45ae146"},
-    {file = "onepassword_sdk-0.1.5-cp311-cp311-manylinux_2_32_x86_64.whl", hash = "sha256:79efbc673b4d6145ae57c6c477530494a392cd6b80b9d1af43baf2b51050dd23"},
-    {file = "onepassword_sdk-0.1.5-cp311-cp311-win_amd64.whl", hash = "sha256:f2d362afedfcc5c6a531637d278ac82e0d38d5a0f59e92e26e2b259578d86226"},
-    {file = "onepassword_sdk-0.1.5-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:71773cf44db431695a821c797d76adde72c082bafc784efa7e4688fdc1e4912b"},
-    {file = "onepassword_sdk-0.1.5-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:74a3c7458e7adcf344f5c1e9f3f4adb495086cc92f184cb210a574551b57c79b"},
-    {file = "onepassword_sdk-0.1.5-cp312-cp312-manylinux_2_32_aarch64.whl", hash = "sha256:b3fbd9e2c2caecc29982ed8a91a134d77ff7abdf2dcc37e11c06f5d73bb09a58"},
-    {file = "onepassword_sdk-0.1.5-cp312-cp312-manylinux_2_32_x86_64.whl", hash = "sha256:500bc314e52cb303acd265709bb72b5730a75c75bc5a8099a232edd690a8d701"},
-    {file = "onepassword_sdk-0.1.5-cp312-cp312-win_amd64.whl", hash = "sha256:6af9bea09989e59958284fd333395a1867d759235bdebb833dcfe73f721d0dab"},
-    {file = "onepassword_sdk-0.1.5-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:e9c8cf43979cd4cd4ab45ac35027099d4a59498e0d869180a6807506bbe5ea81"},
-    {file = "onepassword_sdk-0.1.5-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:e367be8587bc0f54967d1e1acc216edd497c3421e07e9168e66f3160086c1eb4"},
-    {file = "onepassword_sdk-0.1.5-cp313-cp313-manylinux_2_32_aarch64.whl", hash = "sha256:bd9c0ba73eec1748435b9992ca593c6367c639078324fb2b36243f9a2636be1b"},
-    {file = "onepassword_sdk-0.1.5-cp313-cp313-manylinux_2_32_x86_64.whl", hash = "sha256:5667f25609ac8c2337b8f5144e6115520aff30aaaa0e95889bcb9e7aa0c9c6cb"},
-    {file = "onepassword_sdk-0.1.5-cp313-cp313-win_amd64.whl", hash = "sha256:deb761be96e49b11f636a540bfe16509003acfeb1e5cc75669b02ba0e087069e"},
-    {file = "onepassword_sdk-0.1.5-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:83fd2cf7ea677eaa6f191e3f14aee16de78492cf52de7e1d38f59203b4fb9bb5"},
-    {file = "onepassword_sdk-0.1.5-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:185acb722d9b3b3059531d4bd5bf29ec018516d17a16e7dd9b1c46d9056f11db"},
-    {file = "onepassword_sdk-0.1.5-cp39-cp39-manylinux_2_32_aarch64.whl", hash = "sha256:be903be409d1c0a18b6d8740ffd6d8e58e603b095368c373f3a2020b0bc6aa6a"},
-    {file = "onepassword_sdk-0.1.5-cp39-cp39-manylinux_2_32_x86_64.whl", hash = "sha256:4e4683bb4b6b60ae1b96e493ebe21503e01147b59d46c9238a1b2f97b13d9c8a"},
-    {file = "onepassword_sdk-0.1.5-cp39-cp39-win_amd64.whl", hash = "sha256:6b26c5325299660fda75902feb4269dc00749f64dd36ee97561cd72a3305b0e4"},
-    {file = "onepassword_sdk-0.1.5.tar.gz", hash = "sha256:ac88fb75b397c231c594d87d21cdf8e55898e160a59d7e381499a38ccfe4e254"},
+    {file = "onepassword_sdk-0.1.6-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:9b8a80dadc0f4704e594b942f76b35fa96a745b5741aeb00f786c639c00b06b6"},
+    {file = "onepassword_sdk-0.1.6-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:01cbb2daffc27470f59df83b17a768460a0ee6475c27f7fa4a3f0533aa32bb48"},
+    {file = "onepassword_sdk-0.1.6-cp310-cp310-manylinux_2_32_aarch64.whl", hash = "sha256:cf33151edd1c0f5e9c1c1277b2b6be7ff62a2c3f60535350a8bbf9a2e225a815"},
+    {file = "onepassword_sdk-0.1.6-cp310-cp310-manylinux_2_32_x86_64.whl", hash = "sha256:2f82fdd39c7ffe2d1afe43f90b4cb8be7b657e90d3c5f0f8d4d121950318d9cf"},
+    {file = "onepassword_sdk-0.1.6-cp310-cp310-win_amd64.whl", hash = "sha256:14f398dc741f91f542f101312d5ce1331a3e34fbd1890e0d3b9ee54ff78effcf"},
+    {file = "onepassword_sdk-0.1.6-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:aab0592f942c150cc97f3bc579a11f3417a459c2c00488100f3e5439a86d57bb"},
+    {file = "onepassword_sdk-0.1.6-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:b044ab7d1ec2e22eae7ea923dd2b0f29415c9d5b855b36cdd1db9cb467ce3e4b"},
+    {file = "onepassword_sdk-0.1.6-cp311-cp311-manylinux_2_32_aarch64.whl", hash = "sha256:999115cbbd9f68234a94015d0beede1ec5a0c31e65cc9e2be2d6b032b3a4cd34"},
+    {file = "onepassword_sdk-0.1.6-cp311-cp311-manylinux_2_32_x86_64.whl", hash = "sha256:88ee77c3cdfcbe24031d05cbf34f41917113107d0e3be27c11ad525f289377e1"},
+    {file = "onepassword_sdk-0.1.6-cp311-cp311-win_amd64.whl", hash = "sha256:0294c1d1504437ddb7046b00d104dca4b6039cef0fba289ce57a26ee246c94cd"},
+    {file = "onepassword_sdk-0.1.6-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:e17b57eb42e187de8385cc6ca826c6b44c744bb073b4d34083ca694a4a2cdb1d"},
+    {file = "onepassword_sdk-0.1.6-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:603815bb0c326a2ff5e7a9d5481c2d5e12bde53d9a68265911933993589e0b2b"},
+    {file = "onepassword_sdk-0.1.6-cp312-cp312-manylinux_2_32_aarch64.whl", hash = "sha256:da8bb963aa906fac896e4de31f33dafbf65253aff952bbe9416b94fe88fe1fcb"},
+    {file = "onepassword_sdk-0.1.6-cp312-cp312-manylinux_2_32_x86_64.whl", hash = "sha256:f0f10ffb704bf0d7b5f05f1d093a2ce67f0358caf20be71c05b921da23389e48"},
+    {file = "onepassword_sdk-0.1.6-cp312-cp312-win_amd64.whl", hash = "sha256:ef49340397dc4b24c0b9bc5299b651fffb9cd64adc799b0370d17d9f9f015b5c"},
+    {file = "onepassword_sdk-0.1.6-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:490bf3e5435d3c93e60a572fd2802fca8c29f7e79e24b115bfa655c7bab96078"},
+    {file = "onepassword_sdk-0.1.6-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:26133d2e4d48a5ce06ab605b09632ebf3d1a823fb8ea85958934badbe09174c5"},
+    {file = "onepassword_sdk-0.1.6-cp313-cp313-manylinux_2_32_aarch64.whl", hash = "sha256:f4d67786c72edaee959a1479dc3ecdfc1903f5ead5353b00c7961aa5a6f038eb"},
+    {file = "onepassword_sdk-0.1.6-cp313-cp313-manylinux_2_32_x86_64.whl", hash = "sha256:daae29de3860fa845fe0e86373b0e96cac8b418fd42099cdf410f80763c7ff53"},
+    {file = "onepassword_sdk-0.1.6-cp313-cp313-win_amd64.whl", hash = "sha256:6dbb2f5abb9be0d8696fa9cf4246a34da962a40d0cd0302db2c187cd3964bf7f"},
+    {file = "onepassword_sdk-0.1.6-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:c0d23cd892df89559263242070a9ae82ebca5e0423342801c90bc7dd603e5092"},
+    {file = "onepassword_sdk-0.1.6-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:3005bf1da172ca8161e4cb36a826e81b5e749d432cca7bfa986853a741880be3"},
+    {file = "onepassword_sdk-0.1.6-cp39-cp39-manylinux_2_32_aarch64.whl", hash = "sha256:f1bc6de8ae2cac170587359e44420c34e5cb5f5eb367e9ce83c1831e9b1734ef"},
+    {file = "onepassword_sdk-0.1.6-cp39-cp39-manylinux_2_32_x86_64.whl", hash = "sha256:fdb788e0b5efb9b1cafa64c684c7b1c76bde12e1357467a9958503cb4044aa28"},
+    {file = "onepassword_sdk-0.1.6-cp39-cp39-win_amd64.whl", hash = "sha256:6ff1372f8bca95542d90fa0351f2bc5f7be169a1b93cdbb26ac8fbeb39882596"},
+    {file = "onepassword_sdk-0.1.6.tar.gz", hash = "sha256:2481044e4aeac32395478fe32d0ad771f64fffcbe4e77c61b63d566a8d5c5161"},
 ]
 
 [package.dependencies]
@@ -108,13 +108,13 @@ pydantic = ">=2.5"
 
 [[package]]
 name = "pydantic"
-version = "2.10.4"
+version = "2.10.5"
 description = "Data validation using Python type hints"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pydantic-2.10.4-py3-none-any.whl", hash = "sha256:597e135ea68be3a37552fb524bc7d0d66dcf93d395acd93a00682f1efcb8ee3d"},
-    {file = "pydantic-2.10.4.tar.gz", hash = "sha256:82f12e9723da6de4fe2ba888b5971157b3be7ad914267dea8f05f82b28254f06"},
+    {file = "pydantic-2.10.5-py3-none-any.whl", hash = "sha256:4dd4e322dbe55472cb7ca7e73f4b63574eecccf2835ffa2af9021ce113c83c53"},
+    {file = "pydantic-2.10.5.tar.gz", hash = "sha256:278b38dbbaec562011d659ee05f63346951b3a248a6f3642e1bc68894ea2b4ff"},
 ]
 
 [package.dependencies]

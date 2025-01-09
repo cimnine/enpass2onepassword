@@ -140,7 +140,7 @@ Options:
 
 - [ ] Improved support for credit card's expiry date, once [#140][gh-op-140] is implemented
 - [ ] Support for importing attachments, once [#139][gh-op-139] is implemented
-- [ ] Improved support for Secure Notes, once [#141][gh-op-141] is implemented
+- [x] Improved support for Secure Notes, once [#141][gh-op-141] is implemented
 - [ ] Improved support for Wireless Networks, once [#142][gh-op-142] is implemented
 - [ ] Support for favorites, once [#143][gh-op-143] is implemented
 

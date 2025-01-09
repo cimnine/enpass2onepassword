@@ -93,16 +93,6 @@ async def migrate(ep_file,
         sections = map_sections(ep_item)
         fields, category = map_fields(ep_item, category)
 
-        note = ep_item.get('note', None)
-        if note:
-            fields.append(ItemField(
-                id='note',
-                title='Note',
-                field_type=ItemFieldType.TEXT,
-                value=note,
-                section_id=''
-            ))
-
         op_item = ItemCreateParams(
             title=ep_item['title'],
             vault_id=op_vault_id,
@@ -110,7 +100,8 @@ async def migrate(ep_file,
             category=category,
             sections=sections,
             websites=websites,
-            fields=fields
+            fields=fields,
+            notes=ep_item.get('note', None)
         )
         op_items.append(op_item)
 

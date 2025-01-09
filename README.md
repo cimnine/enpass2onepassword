@@ -232,7 +232,7 @@ Release procedure:
 1. Edit the version in `pyproject.toml`
 2. Commit the change
 3. `git push`
-4. Tag the release with the same version
+4. `git tag 0.1.0`
 5. `git push --tags`
 
 The rest is taken care of by a GitHub Action.

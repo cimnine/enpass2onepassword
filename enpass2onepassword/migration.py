@@ -302,8 +302,12 @@ def map_fields(item, category):
     if not fields:
         return [], category
 
-    has_username = any(field["type"] == "username" for field in fields)
-    has_password = any(field["type"] == "password" for field in fields)
+    has_username = any(
+        field["type"] == "username" and field["value"] != "" for field in fields
+    )
+    has_password = any(
+        field["type"] == "password" and field["value"] != "" for field in fields
+    )
 
     main_username_field_added = False
     main_password_field_added = False
@@ -399,7 +403,7 @@ field_type_map = {
     "ccType": ItemFieldType.CREDITCARDTYPE,
     "ccValidfrom": ItemFieldType.TEXT,
     "date": ItemFieldType.TEXT,
-    "email": ItemFieldType.TEXT,
+    "email": ItemFieldType.EMAIL,
     "multiline": ItemFieldType.TEXT,
     "numeric": ItemFieldType.TEXT,
     "password": ItemFieldType.CONCEALED,

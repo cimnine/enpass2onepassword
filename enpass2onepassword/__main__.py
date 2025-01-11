@@ -3,7 +3,7 @@ import asyncio
 
 import click
 
-from enpass2onepassword import __version__, __distribution_name__
+from enpass2onepassword import __distribution_name__, __version__
 from enpass2onepassword.migration import migrate
 
 

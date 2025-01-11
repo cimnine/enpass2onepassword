@@ -1,0 +1,163 @@
+{
+  "folders": [
+    {
+      "icon": "1008",
+      "parent_uuid": "",
+      "title": "Label A",
+      "updated_at": 1546437859,
+      "uuid": "249b5f3b-1bde-41d8-9f8d-c32fedae4284"
+    },
+    {
+      "icon": "1008",
+      "parent_uuid": "",
+      "title": "Label B",
+      "updated_at": 1549229245,
+      "uuid": "61688820-0abb-4b95-a4af-e643c75fe2aa"
+    }
+  ],
+  "items": [
+    {
+      "archived": 0,
+      "auto_submit": 1,
+      "category": "login",
+      "category_name": "Login",
+      "createdAt": 1497946488,
+      "favorite": 0,
+      "field_updated_at": 1559380916,
+      "fields": [
+        {
+          "deleted": 0,
+          "label": "Username",
+          "order": 1,
+          "sensitive": 0,
+          "type": "username",
+          "uid": 10,
+          "updated_at": 1497946488,
+          "value": "",
+          "value_updated_at": 1497946488
+        },
+        {
+          "deleted": 0,
+          "label": "E-mail",
+          "order": 2,
+          "sensitive": 0,
+          "type": "email",
+          "uid": 12,
+          "updated_at": 1497946488,
+          "value": "roque_taorminaw7zy@alleged.nrt",
+          "value_updated_at": 1497946488
+        },
+        {
+          "deleted": 0,
+          "label": "Password",
+          "order": 3,
+          "sensitive": 1,
+          "type": "password",
+          "uid": 11,
+          "updated_at": 1668022621,
+          "value": "retrieval",
+          "value_updated_at": 1497946488
+        },
+        {
+          "deleted": 0,
+          "history": [
+            {
+              "encrypted": false,
+              "updated_at": 1497946488,
+              "value": "https://www.paket.de/pkp/appmanager/pkp/m?_nfpb=true&_nfls=false&_nfxr=false&_pageLabel=m_pkp_registration"
+            }
+          ],
+          "label": "Website",
+          "order": 4,
+          "sensitive": 0,
+          "type": "url",
+          "uid": 13,
+          "updated_at": 1559380916,
+          "value": "https://www.paket.de/",
+          "value_updated_at": 1559380916
+        },
+        {
+          "deleted": 0,
+          "label": "ADDITIONAL DETAILS",
+          "order": 5,
+          "sensitive": 0,
+          "type": "section",
+          "uid": 101,
+          "updated_at": 1497946742,
+          "value": "",
+          "value_updated_at": 1546368589
+        },
+        {
+          "deleted": 0,
+          "label": "Phone number",
+          "order": 6,
+          "sensitive": 0,
+          "type": "phone",
+          "uid": 14,
+          "updated_at": 1497946488,
+          "value": "",
+          "value_updated_at": 1497946488
+        },
+        {
+          "deleted": 0,
+          "label": "One-time code",
+          "order": 7,
+          "sensitive": 0,
+          "type": "totp",
+          "uid": 102,
+          "updated_at": 1497946742,
+          "value": "",
+          "value_updated_at": 1546368589
+        },
+        {
+          "deleted": 0,
+          "label": "Security question",
+          "order": 8,
+          "sensitive": 0,
+          "type": "text",
+          "uid": 15,
+          "updated_at": 1497946742,
+          "value": "Was war Ihr erstes Auto:",
+          "value_updated_at": 1497946742
+        },
+        {
+          "deleted": 0,
+          "label": "Security answer",
+          "order": 9,
+          "sensitive": 1,
+          "type": "text",
+          "uid": 16,
+          "updated_at": 1497946742,
+          "value": "entrepreneur",
+          "value_updated_at": 1497946742
+        },
+        {
+          "deleted": 0,
+          "label": "Website",
+          "order": 10,
+          "sensitive": 0,
+          "type": "url",
+          "uid": 8580,
+          "updated_at": 1559380916,
+          "value": "https://www.dhl.de",
+          "value_updated_at": 1559380916
+        }
+      ],
+      "icon": {
+        "fav": "www.paket.de",
+        "image": {
+          "file": "misc/login"
+        },
+        "type": 1,
+        "uuid": ""
+      },
+      "note": "Addresse:\n\nIndustriestraße 12\n78224 Singen",
+      "subtitle": "roque_taorminaw7zy@alleged.nrt",
+      "template_type": "login.default",
+      "title": "DHL Paket",
+      "trashed": 0,
+      "updated_at": 1665933690,
+      "uuid": "5794d769-7761-4ca6-97fc-f9eb2439a6d3"
+    }
+  ]
+}

@@ -38,7 +38,55 @@
       "title": "Random Note",
       "trashed": 0,
       "updated_at": 1668294736,
-      "uuid": "533f6db7-9cc5-47f7-97e9-0a49f63a32df"
+      "uuid": "24190e89-4792-4447-8a58-b397e54a2395"
+    },
+    {
+      "archived": 0,
+      "auto_submit": 1,
+      "category": "note",
+      "category_name": "Note",
+      "createdAt": 1668294736,
+      "favorite": 0,
+      "field_updated_at": 1668294736,
+      "icon": {
+        "fav": "",
+        "image": {
+          "file": "misc/secure_note"
+        },
+        "type": 1,
+        "uuid": ""
+      },
+      "note": "Line 1\nLine 2",
+      "subtitle": "Line 1",
+      "template_type": "note.default",
+      "title": "Random Note",
+      "trashed": 1,
+      "updated_at": 1668294736,
+      "uuid": "f2e69a14-763c-46dd-ba42-f4620bf02de5"
+    },
+    {
+      "archived": 0,
+      "auto_submit": 1,
+      "category": "note",
+      "category_name": "Note",
+      "createdAt": 1668294736,
+      "favorite": 0,
+      "field_updated_at": 1668294736,
+      "icon": {
+        "fav": "",
+        "image": {
+          "file": "misc/secure_note"
+        },
+        "type": 1,
+        "uuid": ""
+      },
+      "note": "Line 1\nLine 2",
+      "subtitle": "Line 1",
+      "template_type": "note.default",
+      "title": "Random Note",
+      "trashed": 0,
+      "updated_at": 1668294736,
+      "uuid": "422c29fc-7eba-4e93-8df3-d744a6e62d96"
     }
   ]
 }

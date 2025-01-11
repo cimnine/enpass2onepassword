@@ -2,3 +2,4 @@
 # E501 line too long
 # W293 blank line contains whitespace
 extend-ignore = E501,W293
+extend-exclude = .venv,venv,.pytest_cache,megalinter-reports,.ruff_cache

@@ -1,16 +1,8 @@
 from test.helper_ep import enpass
 
-from onepassword import (
-    AutofillBehavior,
-    ItemCategory,
-    ItemCreateParams,
-    ItemField,
-    ItemFieldType,
-    ItemSection,
-    Website,
-)
+from onepassword import ItemCategory, ItemFieldType
 
-from enpass2onepassword.migration import map_fields, map_items
+from enpass2onepassword.migration import map_items
 
 
 async def test_load():

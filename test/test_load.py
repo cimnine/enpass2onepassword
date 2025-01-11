@@ -8,10 +8,10 @@ async def test_load():
 
     assert len(ep_folders) == 2
     assert len(ep_items) == 3
-    assert ep_items[0]["archived"] == True
-    assert ep_items[1]["trashed"] == True
-    assert ep_items[2]["archived"] == False
-    assert ep_items[2]["trashed"] == False
+    assert ep_items[0]["archived"]
+    assert ep_items[1]["trashed"]
+    assert not ep_items[2]["archived"]
+    assert not ep_items[2]["trashed"]
 
 
 async def test_skip():

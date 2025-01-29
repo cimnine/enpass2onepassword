@@ -39,7 +39,7 @@ enpass2onepassword = "enpass2onepassword.__main__:main"
 
 [dependency-groups]
 dev = [
-    "black>=24.10.0,<25",
+    "black>=25.1,<26",
     "isort>=6,<7",
     "flake8>=7.1.1,<8",
     "pytest>=8.3.4,<9",

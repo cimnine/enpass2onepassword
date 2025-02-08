@@ -270,10 +270,11 @@ Also, it required a _Node_ installation with `npm`.
 Release procedure:
 
 1. Edit the version in `pyproject.toml`
-2. Commit the change
-3. `git push`
-4. `git tag 0.1.0`
-5. `git push --tags`
+2. `uv sync`
+3. Commit the change
+4. `git push`
+5. `git tag 0.1.0`
+6. `git push --tags`
 
 The rest is taken care of by the _Release_ GitHub Action.
 

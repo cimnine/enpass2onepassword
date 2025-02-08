@@ -1,6 +1,6 @@
 [project]
 name = "enpass2onepassword"
-version = "0.3.2"
+version = "0.3.3"
 description = "Tool to migrate from Enpass to 1Password"
 authors = [{ name = "Christian Mäder", email = "mail@cimnine.ch" }]
 requires-python = "~=3.10"

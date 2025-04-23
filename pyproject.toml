@@ -25,7 +25,7 @@ classifiers = [
 ]
 dependencies = [
     "click>=8.1.8,<9",
-    "onepassword-sdk>=0.2,<0.3",
+    "onepassword-sdk>=0.3,<0.4",
     "aiostream>=0.6.4,<0.7",
     "pyrate-limiter>=3.7.0,<4",
     "wakepy>=0.10.1,<0.11",
